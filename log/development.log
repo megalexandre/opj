@@ -1,0 +1,231 @@
+  [1m[35m (10.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY) /*application='Opj'*/[0m
+  [1m[35m (5.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Opj'*/[0m
+  [1m[35m (1.4ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7217190273951417795) /*application='Opj'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (2.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (2.8ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Opj'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (4.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-05-01 20:57:12.066815', '2026-05-01 20:57:12.066822') RETURNING "key" /*application='Opj'*/[0m
+Migrating to CreateAddress (20260501203600)
+  [1m[35m (1.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(7217190273951417795) /*application='Opj'*/[0m
+  [1m[35m (1.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7217190273951417795) /*application='Opj'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (2.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (2.7ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Opj'*/[0m
+Migrating to CreateAddress (20260501203600)
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mBEGIN /*application='Opj'*/[0m
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[31mROLLBACK /*application='Opj'*/[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT pg_advisory_unlock(7217190273951417795) /*application='Opj'*/[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7217190273951417795) /*application='Opj'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (2.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (2.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Opj'*/[0m
+Migrating to CreateAddress (20260501203600)
+  [1m[36mTRANSACTION (0.9ms)[0m  [1m[35mBEGIN /*application='Opj'*/[0m
+  [1m[35m (7.7ms)[0m  [1m[35mCREATE TABLE "addresses" ("id" uuid DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY, "link" character varying, "place" character varying, "cep" character varying, "number" character varying, "address" character varying, "complement" character varying, "neighborhood" character varying, "city" character varying, "state" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Opj'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (1.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260501203600') RETURNING "version" /*application='Opj'*/[0m
+  [1m[36mTRANSACTION (4.5ms)[0m  [1m[35mCOMMIT /*application='Opj'*/[0m
+  [1m[35m (1.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(7217190273951417795) /*application='Opj'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[35mSET search_path TO public /*application='Opj'*/[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[35mSET search_path TO "$user", public, topology, tiger /*application='Opj'*/[0m
+  [1m[35mSQL (1.1ms)[0m  [1m[35mSET search_path TO topology /*application='Opj'*/[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[35mSET search_path TO "$user", public, topology, tiger /*application='Opj'*/[0m
+  [1m[35mSQL (1.1ms)[0m  [1m[35mSET search_path TO tiger /*application='Opj'*/[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[35mSET search_path TO "$user", public, topology, tiger /*application='Opj'*/[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[35mSET search_path TO public /*application='Opj'*/[0m
+  [1m[35mSQL (1.1ms)[0m  [1m[35mSET search_path TO "$user", public, topology, tiger /*application='Opj'*/[0m
+  [1m[35mSQL (1.4ms)[0m  [1m[35mSET search_path TO topology /*application='Opj'*/[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[35mSET search_path TO "$user", public, topology, tiger /*application='Opj'*/[0m
+  [1m[35mSQL (0.9ms)[0m  [1m[35mSET search_path TO tiger /*application='Opj'*/[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[35mSET search_path TO "$user", public, topology, tiger /*application='Opj'*/[0m
+Started GET "/address" for 127.0.0.1 at 2026-05-01 18:06:55 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (5.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+  
+ActionController::RoutingError (No route matches [GET] "/address"):
+  
+Started GET "/addresses" for 127.0.0.1 at 2026-05-01 18:07:22 -0300
+Processing by AddressesController#index as */*
+  Parameters: {"cep"=>"41234567", "place"=>"any name", "number"=>"12", "address"=>"any name", "complement"=>"description", "neighborhood"=>"jacobina III", "city"=>"jacobina", "state"=>"ba", "link"=>"https://maps.google.com/?q=-11.123456,-40.123456"}
+  [1m[36mAddress Load (57.6ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" /*action='index',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:7:in `index'
+Completed 200 OK in 82ms (Views: 0.3ms | ActiveRecord: 81.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/addresses" for 127.0.0.1 at 2026-05-01 18:08:01 -0300
+Processing by AddressesController#index as */*
+  [1m[36mAddress Load (2.4ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" /*action='index',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:7:in `index'
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 2.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/addresses" for 127.0.0.1 at 2026-05-01 18:08:20 -0300
+Processing by AddressesController#create as */*
+Completed 400 Bad Request in 1ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty or invalid: address):
+  
+app/controllers/addresses_controller.rb:48:in `address_params'
+app/controllers/addresses_controller.rb:17:in `create'
+Started POST "/addresses" for 127.0.0.1 at 2026-05-01 18:09:04 -0300
+Processing by AddressesController#create as */*
+  Parameters: {"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}
+Completed 400 Bad Request in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty or invalid: address):
+  
+app/controllers/addresses_controller.rb:48:in `address_params'
+app/controllers/addresses_controller.rb:17:in `create'
+Started POST "/addresses" for 127.0.0.1 at 2026-05-01 18:09:14 -0300
+Processing by AddressesController#create as */*
+  Parameters: {"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}
+Completed 400 Bad Request in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty or invalid: address):
+  
+app/controllers/addresses_controller.rb:48:in `address_params'
+app/controllers/addresses_controller.rb:17:in `create'
+Started POST "/addresses" for 127.0.0.1 at 2026-05-01 18:09:25 -0300
+Processing by AddressesController#create as */*
+  Parameters: {"address"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}
+  [1m[36mTRANSACTION (1.8ms)[0m  [1m[35mBEGIN /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+  [1m[36mAddress Create (6.1ms)[0m  [1m[32mINSERT INTO "addresses" ("link", "place", "cep", "number", "address", "complement", "neighborhood", "city", "state", "created_at", "updated_at") VALUES ('https://maps.example.com/123', 'Edifício Central', '01310-100', '1000', 'Av. Paulista', 'Apto 42', 'Bela Vista', 'São Paulo', 'SP', '2026-05-01 21:09:25.906076', '2026-05-01 21:09:25.906076') RETURNING "id" /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+  [1m[36mTRANSACTION (4.8ms)[0m  [1m[35mCOMMIT /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+Completed 201 Created in 56ms (Views: 0.3ms | ActiveRecord: 32.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/addresses" for 127.0.0.1 at 2026-05-01 18:11:55 -0300
+Processing by AddressesController#index as */*
+  [1m[36mAddress Load (2.3ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" /*action='index',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:7:in `map'
+Completed 200 OK in 26ms (Views: 0.5ms | ActiveRecord: 11.4ms (1 query, 0 cached) | GC: 1.6ms)
+
+
+Started POST "/addresses" for 127.0.0.1 at 2026-05-01 18:12:01 -0300
+Processing by AddressesController#create as */*
+  Parameters: {"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}
+Completed 400 Bad Request in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty or invalid: address):
+  
+app/controllers/addresses_controller.rb:48:in `address_params'
+app/controllers/addresses_controller.rb:17:in `create'
+Started POST "/addresses" for 127.0.0.1 at 2026-05-01 18:12:13 -0300
+Processing by AddressesController#create as */*
+  Parameters: {"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}
+Completed 400 Bad Request in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty or invalid: address):
+  
+app/controllers/addresses_controller.rb:48:in `address_params'
+app/controllers/addresses_controller.rb:17:in `create'
+Started POST "/addresses" for 127.0.0.1 at 2026-05-01 18:12:56 -0300
+Processing by AddressesController#create as */*
+  Parameters: {"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}
+  [1m[36mTRANSACTION (1.4ms)[0m  [1m[35mBEGIN /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+  [1m[36mAddress Create (4.2ms)[0m  [1m[32mINSERT INTO "addresses" ("link", "place", "cep", "number", "address", "complement", "neighborhood", "city", "state", "created_at", "updated_at") VALUES ('https://maps.example.com/123', 'Edifício Central', '01310-100', '1000', 'Av. Paulista', 'Apto 42', 'Bela Vista', 'São Paulo', 'SP', '2026-05-01 21:12:56.233481', '2026-05-01 21:12:56.233481') RETURNING "id" /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+  [1m[36mTRANSACTION (4.8ms)[0m  [1m[35mCOMMIT /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+Completed 201 Created in 29ms (Views: 0.5ms | ActiveRecord: 19.2ms (1 query, 0 cached) | GC: 0.4ms)
+
+
+Started POST "/addresses" for 127.0.0.1 at 2026-05-01 18:13:01 -0300
+Processing by AddressesController#create as */*
+  Parameters: {"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}
+  [1m[36mTRANSACTION (2.0ms)[0m  [1m[35mBEGIN /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+  [1m[36mAddress Create (4.8ms)[0m  [1m[32mINSERT INTO "addresses" ("link", "place", "cep", "number", "address", "complement", "neighborhood", "city", "state", "created_at", "updated_at") VALUES ('https://maps.example.com/123', 'Edifício Central', '01310-100', '1000', 'Av. Paulista', 'Apto 42', 'Bela Vista', 'São Paulo', 'SP', '2026-05-01 21:13:01.545932', '2026-05-01 21:13:01.545932') RETURNING "id" /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+  [1m[36mTRANSACTION (5.4ms)[0m  [1m[35mCOMMIT /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+Completed 201 Created in 15ms (Views: 0.3ms | ActiveRecord: 12.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/addresses/3b55da52-3f84-447c-8c2d-dc5ffb204f9c" for 127.0.0.1 at 2026-05-01 18:13:30 -0300
+Processing by AddressesController#show as */*
+  Parameters: {"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP", "id"=>"3b55da52-3f84-447c-8c2d-dc5ffb204f9c"}
+  [1m[36mAddress Load (2.1ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" WHERE "addresses"."id" = '3b55da52-3f84-447c-8c2d-dc5ffb204f9c' LIMIT 1 /*action='show',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:43:in `set_address'
+Completed 200 OK in 13ms (Views: 0.3ms | ActiveRecord: 2.0ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Started DELETE "/addresses/3b55da52-3f84-447c-8c2d-dc5ffb204f9c" for 127.0.0.1 at 2026-05-01 18:13:54 -0300
+Processing by AddressesController#destroy as */*
+  Parameters: {"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP", "id"=>"3b55da52-3f84-447c-8c2d-dc5ffb204f9c"}
+  [1m[36mAddress Load (2.3ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" WHERE "addresses"."id" = '3b55da52-3f84-447c-8c2d-dc5ffb204f9c' LIMIT 1 /*action='destroy',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:43:in `set_address'
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[35mBEGIN /*action='destroy',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:37:in `destroy'
+  [1m[36mAddress Destroy (5.3ms)[0m  [1m[31mDELETE FROM "addresses" WHERE "addresses"."id" = '3b55da52-3f84-447c-8c2d-dc5ffb204f9c' /*action='destroy',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:37:in `destroy'
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT /*action='destroy',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:37:in `destroy'
+Completed 204 No Content in 17ms (ActiveRecord: 12.9ms (2 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/addresses" for 127.0.0.1 at 2026-05-01 18:13:58 -0300
+Processing by AddressesController#index as */*
+  [1m[36mAddress Load (2.4ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" /*action='index',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:7:in `map'
+Completed 200 OK in 5ms (Views: 0.6ms | ActiveRecord: 2.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started PUT "/addresses/3b55da52-3f84-447c-8c2d-dc5ffb204f9c" for 127.0.0.1 at 2026-05-01 18:14:30 -0300
+Processing by AddressesController#update as */*
+  Parameters: {"link"=>"https://maps.example.com/123", "place"=>"Edifício Central 2", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP", "id"=>"3b55da52-3f84-447c-8c2d-dc5ffb204f9c"}
+  [1m[36mAddress Load (1.6ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" WHERE "addresses"."id" = '3b55da52-3f84-447c-8c2d-dc5ffb204f9c' LIMIT 1 /*action='update',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:43:in `set_address'
+Completed 404 Not Found in 3ms (ActiveRecord: 1.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Address with 'id'="3b55da52-3f84-447c-8c2d-dc5ffb204f9c"):
+  
+app/controllers/addresses_controller.rb:43:in `set_address'
+Started POST "/addresses" for 127.0.0.1 at 2026-05-01 18:16:00 -0300
+Processing by AddressesController#create as */*
+  Parameters: {"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}
+  [1m[36mTRANSACTION (2.3ms)[0m  [1m[35mBEGIN /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+  [1m[36mAddress Create (5.5ms)[0m  [1m[32mINSERT INTO "addresses" ("link", "place", "cep", "number", "address", "complement", "neighborhood", "city", "state", "created_at", "updated_at") VALUES ('https://maps.example.com/123', 'Edifício Central', '01310-100', '1000', 'Av. Paulista', 'Apto 42', 'Bela Vista', 'São Paulo', 'SP', '2026-05-01 21:16:00.219217', '2026-05-01 21:16:00.219217') RETURNING "id" /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+  [1m[36mTRANSACTION (6.4ms)[0m  [1m[35mCOMMIT /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+Completed 201 Created in 17ms (Views: 0.4ms | ActiveRecord: 14.1ms (1 query, 0 cached) | GC: 0.4ms)
+
+
+Started PUT "/addresses/544edb78-8330-4c1a-82f2-ade2e1ea766d" for 127.0.0.1 at 2026-05-01 18:16:15 -0300
+Processing by AddressesController#update as */*
+  Parameters: {"id"=>"544edb78-8330-4c1a-82f2-ade2e1ea766d", "link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP", "created_at"=>"2026-05-01T21:16:00.219Z", "updated_at"=>"2026-05-01T21:16:00.219Z"}
+  [1m[36mAddress Load (2.3ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" WHERE "addresses"."id" = '544edb78-8330-4c1a-82f2-ade2e1ea766d' LIMIT 1 /*action='update',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:43:in `set_address'
+[31mUnpermitted parameters: :id, :created_at, :updated_at. Context: { controller: AddressesController, action: update, request: #<ActionDispatch::Request:0x000076962b46fdd8>, params: {"id"=>"544edb78-8330-4c1a-82f2-ade2e1ea766d", "link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP", "created_at"=>"2026-05-01T21:16:00.219Z", "updated_at"=>"2026-05-01T21:16:00.219Z", "controller"=>"addresses", "action"=>"update"} }[0m
+Completed 200 OK in 6ms (Views: 0.3ms | ActiveRecord: 2.3ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Started PUT "/addresses/544edb78-8330-4c1a-82f2-ade2e1ea766d" for 127.0.0.1 at 2026-05-01 18:16:18 -0300
+Processing by AddressesController#update as */*
+  Parameters: {"id"=>"544edb78-8330-4c1a-82f2-ade2e1ea766d", "link"=>"https://maps.example.com/1233", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP", "created_at"=>"2026-05-01T21:16:00.219Z", "updated_at"=>"2026-05-01T21:16:00.219Z"}
+  [1m[36mAddress Load (2.8ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" WHERE "addresses"."id" = '544edb78-8330-4c1a-82f2-ade2e1ea766d' LIMIT 1 /*action='update',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:43:in `set_address'
+[31mUnpermitted parameters: :id, :created_at, :updated_at. Context: { controller: AddressesController, action: update, request: #<ActionDispatch::Request:0x000076962b462318>, params: {"id"=>"544edb78-8330-4c1a-82f2-ade2e1ea766d", "link"=>"https://maps.example.com/1233", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP", "created_at"=>"2026-05-01T21:16:00.219Z", "updated_at"=>"2026-05-01T21:16:00.219Z", "controller"=>"addresses", "action"=>"update"} }[0m
+  [1m[36mTRANSACTION (1.8ms)[0m  [1m[35mBEGIN /*action='update',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:28:in `update'
+  [1m[36mAddress Update (6.6ms)[0m  [1m[33mUPDATE "addresses" SET "link" = 'https://maps.example.com/1233', "updated_at" = '2026-05-01 21:16:18.868065' WHERE "addresses"."id" = '544edb78-8330-4c1a-82f2-ade2e1ea766d' /*action='update',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:28:in `update'
+  [1m[36mTRANSACTION (6.4ms)[0m  [1m[35mCOMMIT /*action='update',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:28:in `update'
+Completed 200 OK in 24ms (Views: 0.3ms | ActiveRecord: 17.5ms (2 queries, 0 cached) | GC: 0.6ms)
+
+

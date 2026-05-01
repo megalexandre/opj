@@ -1,0 +1,10 @@
+services:
+  db:
+    image: postgis/postgis:17-3.6-alpine
+    container_name: opj_postgres
+    environment:
+      POSTGRES_USER: API_USER
+      POSTGRES_PASSWORD: API_PASSWORD
+      POSTGRES_DB: API_DEVELOPMENT
+    ports:
+      - "5432:5432"
