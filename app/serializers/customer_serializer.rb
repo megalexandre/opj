@@ -1,0 +1,18 @@
+class CustomerSerializer
+  def initialize(customer)
+    @customer = customer
+  end
+
+  def as_json(*)
+    {
+      id: @customer.id,
+      name: @customer.name,
+      email: @customer.email,
+      tax_id: @customer.tax_id,
+      phone: @customer.phone,
+      address: AddressSerializer.new(@customer.address).as_json,
+      created_at: @customer.created_at,
+      updated_at: @customer.updated_at
+    }
+  end
+end

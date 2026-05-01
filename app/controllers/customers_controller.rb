@@ -3,14 +3,13 @@ class CustomersController < ApplicationController
 
   # GET /customers
   def index
-    @customers = Customer.all
-
-    render json: @customers
+    @customers = Customer.includes(:address).all
+    render json: @customers.map { CustomerSerializer.new(_1) }
   end
 
   # GET /customers/1
   def show
-    render json: @customer
+    render json: CustomerSerializer.new(@customer)
   end
 
   # POST /customers
@@ -18,7 +17,7 @@ class CustomersController < ApplicationController
     @customer = Customer.new(customer_params)
 
     if @customer.save
-      render json: @customer, status: :created, location: @customer
+      render json: CustomerSerializer.new(@customer), status: :created
     else
       render json: @customer.errors, status: :unprocessable_content
     end
@@ -27,7 +26,7 @@ class CustomersController < ApplicationController
   # PATCH/PUT /customers/1
   def update
     if @customer.update(customer_params)
-      render json: @customer
+      render json: CustomerSerializer.new(@customer)
     else
       render json: @customer.errors, status: :unprocessable_content
     end
@@ -41,13 +40,13 @@ class CustomersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_customer
-      @customer = Customer.find(params.expect(:id))
+      @customer = Customer.includes(:address).find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def customer_params
-      params.expect(:address_id, :name, :email, :tax_id, :phone,
-        { address_attributes: [ :link, :place, :cep, :number, :address, :complement, :neighborhood, :city, :state ] }
+      params.permit(:address_id, :name, :email, :tax_id, :phone,
+        address_attributes: [ :link, :place, :cep, :number, :address, :complement, :neighborhood, :city, :state ]
       )
     end
 end

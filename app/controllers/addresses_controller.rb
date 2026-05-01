@@ -34,7 +34,11 @@ class AddressesController < ApplicationController
 
   # DELETE /addresses/1
   def destroy
-    @address.destroy!
+    if @address.destroy
+      head :no_content
+    else
+      render json: { errors: @address.errors.full_messages }, status: :unprocessable_content
+    end
   end
 
   private

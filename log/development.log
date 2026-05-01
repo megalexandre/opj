@@ -315,3 +315,306 @@ Contents:
     "city": "São Paulo",
     "state": "SP"
 }
+Started POST "/customers" for 127.0.0.1 at 2026-05-01 19:51:22 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (4.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+Error occurred while parsing request parameters.
+Contents:
+
+{
+    "name": "João Silva",
+    "email": "joao@email.com",
+    "tax_id": "123.456.789-00",
+    "phone": "11999999999",
+    "address_attributes": {
+    "link": "https://maps.example.com/123",
+    "place": "Edifício Central",
+    "cep": "01310-100",
+    "number": "1000",
+    "address": "Av. Paulista",
+    "complement": "Apto 42",
+    "neighborhood": "Bela Vista",
+    "city": "São Paulo",
+    "state": "SP"
+}
+Processing by CustomersController#create as */*
+Completed 400 Bad Request in 6ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+ActionDispatch::Http::Parameters::ParseError (Error occurred while parsing request parameters)
+Caused by: JSON::ParserError (expected ',' or '}' after object value, got: EOF at line 15 column 2)
+
+Information for: ActionDispatch::Http::Parameters::ParseError (Error occurred while parsing request parameters):
+  
+app/controllers/customers_controller.rb:49:in `customer_params'
+app/controllers/customers_controller.rb:18:in `create'
+
+Information for cause: JSON::ParserError (expected ',' or '}' after object value, got: EOF at line 15 column 2):
+  
+app/controllers/customers_controller.rb:49:in `customer_params'
+app/controllers/customers_controller.rb:18:in `create'
+Started POST "/customers" for 127.0.0.1 at 2026-05-01 19:52:14 -0300
+Processing by CustomersController#create as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}}
+Completed 400 Bad Request in 1ms (ActiveRecord: 83.9ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty or invalid: address_id):
+  
+app/controllers/customers_controller.rb:49:in `customer_params'
+app/controllers/customers_controller.rb:18:in `create'
+Started POST "/customers" for 127.0.0.1 at 2026-05-01 19:52:54 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (5.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+Processing by CustomersController#create as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}}
+[31mUnpermitted parameter: :customer. Context: { controller: CustomersController, action: create, request: #<ActionDispatch::Request:0x0000760e97764ed8>, params: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "controller"=>"customers", "action"=>"create", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}} }[0m
+  [1m[36mTRANSACTION (1.4ms)[0m  [1m[35mBEGIN /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+  [1m[36mAddress Create (4.9ms)[0m  [1m[32mINSERT INTO "addresses" ("link", "place", "cep", "number", "address", "complement", "neighborhood", "city", "state", "created_at", "updated_at") VALUES ('https://maps.example.com/123', 'Edifício Central', '01310-100', '1000', 'Av. Paulista', 'Apto 42', 'Bela Vista', 'São Paulo', 'SP', '2026-05-01 22:52:54.476865', '2026-05-01 22:52:54.476865') RETURNING "id" /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+  [1m[36mCustomer Create (3.9ms)[0m  [1m[32mINSERT INTO "customers" ("address_id", "name", "email", "tax_id", "phone", "created_at", "updated_at") VALUES ('384b6cf1-65eb-4249-95ea-dd93697e5b8f', 'João Silva', 'joao@email.com', '123.456.789-00', '11999999999', '2026-05-01 22:52:54.485591', '2026-05-01 22:52:54.485591') RETURNING "id" /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+  [1m[36mTRANSACTION (4.6ms)[0m  [1m[35mCOMMIT /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+Completed 201 Created in 73ms (Views: 1.2ms | ActiveRecord: 120.4ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/addresses" for 127.0.0.1 at 2026-05-01 19:53:02 -0300
+Processing by AddressesController#index as */*
+  [1m[36mAddress Load (2.0ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" /*action='index',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:7:in `map'
+Completed 200 OK in 4ms (Views: 0.5ms | ActiveRecord: 2.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/addresses" for 127.0.0.1 at 2026-05-01 19:53:15 -0300
+Processing by AddressesController#create as */*
+  Parameters: {"link"=>"https://maps.example.com/123", "place"=>"ALexandre", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[35mBEGIN /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+  [1m[36mAddress Create (5.1ms)[0m  [1m[32mINSERT INTO "addresses" ("link", "place", "cep", "number", "address", "complement", "neighborhood", "city", "state", "created_at", "updated_at") VALUES ('https://maps.example.com/123', 'ALexandre', '01310-100', '1000', 'Av. Paulista', 'Apto 42', 'Bela Vista', 'São Paulo', 'SP', '2026-05-01 22:53:15.402289', '2026-05-01 22:53:15.402289') RETURNING "id" /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+  [1m[36mTRANSACTION (4.8ms)[0m  [1m[35mCOMMIT /*action='create',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:19:in `create'
+Completed 201 Created in 15ms (Views: 0.6ms | ActiveRecord: 11.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/customers" for 127.0.0.1 at 2026-05-01 19:53:31 -0300
+Processing by CustomersController#create as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}, "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}}}
+[31mUnpermitted parameter: :id. Context: { controller: CustomersController, action: create, request: #<ActionDispatch::Request:0x0000760e9529adc8>, params: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}, "controller"=>"customers", "action"=>"create", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}}} }[0m
+[31mUnpermitted parameter: :customer. Context: { controller: CustomersController, action: create, request: #<ActionDispatch::Request:0x0000760e9529adc8>, params: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}, "controller"=>"customers", "action"=>"create", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}}} }[0m
+  [1m[36mTRANSACTION (2.0ms)[0m  [1m[35mBEGIN /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+  [1m[36mAddress Create (5.2ms)[0m  [1m[32mINSERT INTO "addresses" ("link", "place", "cep", "number", "address", "complement", "neighborhood", "city", "state", "created_at", "updated_at") VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-05-01 22:53:31.403322', '2026-05-01 22:53:31.403322') RETURNING "id" /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+  [1m[36mCustomer Create (2.1ms)[0m  [1m[32mINSERT INTO "customers" ("address_id", "name", "email", "tax_id", "phone", "created_at", "updated_at") VALUES ('a8986d97-46e2-4164-909f-2b231c5af9f4', 'João Silva', 'joao@email.com', '123.456.789-00', '11999999999', '2026-05-01 22:53:31.411011', '2026-05-01 22:53:31.411011') RETURNING "id" /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[31mROLLBACK /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+Completed 500 Internal Server Error in 16ms (ActiveRecord: 10.3ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+ActiveRecord::RecordNotUnique (PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_customers_on_email"
+DETAIL:  Key (email)=(joao@email.com) already exists.
+)
+Caused by: PG::UniqueViolation (ERROR:  duplicate key value violates unique constraint "index_customers_on_email"
+DETAIL:  Key (email)=(joao@email.com) already exists.
+)
+
+Information for: ActiveRecord::RecordNotUnique (PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_customers_on_email"
+DETAIL:  Key (email)=(joao@email.com) already exists.
+):
+  
+
+Information for cause: PG::UniqueViolation (ERROR:  duplicate key value violates unique constraint "index_customers_on_email"
+DETAIL:  Key (email)=(joao@email.com) already exists.
+):
+  
+app/controllers/customers_controller.rb:20:in `create'
+Started POST "/customers" for 127.0.0.1 at 2026-05-01 19:53:41 -0300
+Processing by CustomersController#create as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}, "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}}}
+[31mUnpermitted parameter: :id. Context: { controller: CustomersController, action: create, request: #<ActionDispatch::Request:0x0000760e952338f8>, params: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}, "controller"=>"customers", "action"=>"create", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}}} }[0m
+[31mUnpermitted parameter: :customer. Context: { controller: CustomersController, action: create, request: #<ActionDispatch::Request:0x0000760e952338f8>, params: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}, "controller"=>"customers", "action"=>"create", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}}} }[0m
+  [1m[36mTRANSACTION (2.2ms)[0m  [1m[35mBEGIN /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+  [1m[36mAddress Create (5.4ms)[0m  [1m[32mINSERT INTO "addresses" ("link", "place", "cep", "number", "address", "complement", "neighborhood", "city", "state", "created_at", "updated_at") VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-05-01 22:53:41.284930', '2026-05-01 22:53:41.284930') RETURNING "id" /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+  [1m[36mCustomer Create (2.4ms)[0m  [1m[32mINSERT INTO "customers" ("address_id", "name", "email", "tax_id", "phone", "created_at", "updated_at") VALUES ('b5a235aa-edf0-41a6-9b00-294b6949f0ce', 'João Silva', 'joao@email2.com', '123.456.789-00', '11999999999', '2026-05-01 22:53:41.293134', '2026-05-01 22:53:41.293134') RETURNING "id" /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[31mROLLBACK /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+Completed 500 Internal Server Error in 17ms (ActiveRecord: 11.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+ActiveRecord::RecordNotUnique (PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_customers_on_tax_id"
+DETAIL:  Key (tax_id)=(123.456.789-00) already exists.
+)
+Caused by: PG::UniqueViolation (ERROR:  duplicate key value violates unique constraint "index_customers_on_tax_id"
+DETAIL:  Key (tax_id)=(123.456.789-00) already exists.
+)
+
+Information for: ActiveRecord::RecordNotUnique (PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_customers_on_tax_id"
+DETAIL:  Key (tax_id)=(123.456.789-00) already exists.
+):
+  
+
+Information for cause: PG::UniqueViolation (ERROR:  duplicate key value violates unique constraint "index_customers_on_tax_id"
+DETAIL:  Key (tax_id)=(123.456.789-00) already exists.
+):
+  
+app/controllers/customers_controller.rb:20:in `create'
+Started POST "/customers" for 127.0.0.1 at 2026-05-01 19:53:48 -0300
+Processing by CustomersController#create as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-01", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}, "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-01", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}}}
+[31mUnpermitted parameter: :id. Context: { controller: CustomersController, action: create, request: #<ActionDispatch::Request:0x0000760e9518c440>, params: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-01", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}, "controller"=>"customers", "action"=>"create", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-01", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}}} }[0m
+[31mUnpermitted parameter: :customer. Context: { controller: CustomersController, action: create, request: #<ActionDispatch::Request:0x0000760e9518c440>, params: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-01", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}, "controller"=>"customers", "action"=>"create", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-01", "phone"=>"11999999999", "address_attributes"=>{"id"=>"84252bab-c20e-43a2-9b99-de11929340d1"}}} }[0m
+  [1m[36mTRANSACTION (1.8ms)[0m  [1m[35mBEGIN /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+  [1m[36mAddress Create (4.2ms)[0m  [1m[32mINSERT INTO "addresses" ("link", "place", "cep", "number", "address", "complement", "neighborhood", "city", "state", "created_at", "updated_at") VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-05-01 22:53:48.614189', '2026-05-01 22:53:48.614189') RETURNING "id" /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+  [1m[36mCustomer Create (1.8ms)[0m  [1m[32mINSERT INTO "customers" ("address_id", "name", "email", "tax_id", "phone", "created_at", "updated_at") VALUES ('5990a793-df8a-4c4d-8299-951051d9d5e2', 'João Silva', 'joao@email2.com', '123.456.789-01', '11999999999', '2026-05-01 22:53:48.620304', '2026-05-01 22:53:48.620304') RETURNING "id" /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+  [1m[36mTRANSACTION (4.8ms)[0m  [1m[35mCOMMIT /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:20:in `create'
+Completed 201 Created in 18ms (Views: 0.9ms | ActiveRecord: 12.6ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-05-01 19:54:03 -0300
+Processing by CustomersController#index as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}}
+  [1m[36mCustomer Load (2.9ms)[0m  [1m[34mSELECT "customers".* FROM "customers" /*action='index',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:8:in `index'
+Completed 200 OK in 6ms (Views: 3.0ms | ActiveRecord: 2.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/customers/4285ad68-7d11-4a4a-bf87-7e86ec5dbddb%22" for 127.0.0.1 at 2026-05-01 19:54:10 -0300
+Processing by CustomersController#show as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "id"=>"4285ad68-7d11-4a4a-bf87-7e86ec5dbddb\"", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}}
+  [1m[36mCustomer Load (2.5ms)[0m  [1m[34mSELECT "customers".* FROM "customers" WHERE "customers"."id" = NULL LIMIT 1 /*action='show',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:44:in `set_customer'
+Completed 404 Not Found in 4ms (ActiveRecord: 2.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Customer with 'id'="4285ad68-7d11-4a4a-bf87-7e86ec5dbddb\""):
+  
+app/controllers/customers_controller.rb:44:in `set_customer'
+Started GET "/customers/4285ad68-7d11-4a4a-bf87-7e86ec5dbddb" for 127.0.0.1 at 2026-05-01 19:54:35 -0300
+Processing by CustomersController#show as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "id"=>"4285ad68-7d11-4a4a-bf87-7e86ec5dbddb", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}}
+  [1m[36mCustomer Load (2.0ms)[0m  [1m[34mSELECT "customers".* FROM "customers" WHERE "customers"."id" = '4285ad68-7d11-4a4a-bf87-7e86ec5dbddb' LIMIT 1 /*action='show',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:44:in `set_customer'
+Completed 200 OK in 4ms (Views: 0.4ms | ActiveRecord: 2.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/customers/4285ad68-7d11-4a4a-bf87-7e86ec5dbddb" for 127.0.0.1 at 2026-05-01 19:54:51 -0300
+Processing by CustomersController#show as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "id"=>"4285ad68-7d11-4a4a-bf87-7e86ec5dbddb", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}}
+  [1m[36mCustomer Load (2.5ms)[0m  [1m[34mSELECT "customers".* FROM "customers" WHERE "customers"."id" = '4285ad68-7d11-4a4a-bf87-7e86ec5dbddb' LIMIT 1 /*action='show',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:44:in `set_customer'
+Completed 200 OK in 5ms (Views: 0.5ms | ActiveRecord: 2.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/customers/4285ad68-7d11-4a4a-bf87-7e86ec5dbddb" for 127.0.0.1 at 2026-05-01 19:57:06 -0300
+Processing by CustomersController#show as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "id"=>"4285ad68-7d11-4a4a-bf87-7e86ec5dbddb", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}}
+  [1m[36mCustomer Load (1.8ms)[0m  [1m[34mSELECT "customers".* FROM "customers" WHERE "customers"."id" = '4285ad68-7d11-4a4a-bf87-7e86ec5dbddb' LIMIT 1 /*action='show',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:43:in `set_customer'
+  [1m[36mAddress Load (1.8ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" WHERE "addresses"."id" = '5990a793-df8a-4c4d-8299-951051d9d5e2' /*action='show',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:43:in `set_customer'
+Completed 200 OK in 54ms (Views: 0.7ms | ActiveRecord: 18.1ms (2 queries, 0 cached) | GC: 13.8ms)
+
+
+Started DELETE "/customers/4285ad68-7d11-4a4a-bf87-7e86ec5dbddb" for 127.0.0.1 at 2026-05-01 19:57:40 -0300
+Processing by CustomersController#destroy as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "id"=>"4285ad68-7d11-4a4a-bf87-7e86ec5dbddb", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}}
+  [1m[36mCustomer Load (2.4ms)[0m  [1m[34mSELECT "customers".* FROM "customers" WHERE "customers"."id" = '4285ad68-7d11-4a4a-bf87-7e86ec5dbddb' LIMIT 1 /*action='destroy',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:43:in `set_customer'
+  [1m[36mAddress Load (2.1ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" WHERE "addresses"."id" = '5990a793-df8a-4c4d-8299-951051d9d5e2' /*action='destroy',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:43:in `set_customer'
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[35mBEGIN /*action='destroy',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:37:in `destroy'
+  [1m[36mCustomer Destroy (5.3ms)[0m  [1m[31mDELETE FROM "customers" WHERE "customers"."id" = '4285ad68-7d11-4a4a-bf87-7e86ec5dbddb' /*action='destroy',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:37:in `destroy'
+  [1m[36mTRANSACTION (5.1ms)[0m  [1m[35mCOMMIT /*action='destroy',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:37:in `destroy'
+Completed 204 No Content in 24ms (ActiveRecord: 16.6ms (3 queries, 0 cached) | GC: 0.6ms)
+
+
+Started GET "/customers/4285ad68-7d11-4a4a-bf87-7e86ec5dbddb" for 127.0.0.1 at 2026-05-01 19:57:51 -0300
+Processing by CustomersController#show as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "id"=>"4285ad68-7d11-4a4a-bf87-7e86ec5dbddb", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-00", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}}
+  [1m[36mCustomer Load (2.2ms)[0m  [1m[34mSELECT "customers".* FROM "customers" WHERE "customers"."id" = '4285ad68-7d11-4a4a-bf87-7e86ec5dbddb' LIMIT 1 /*action='show',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:43:in `set_customer'
+Completed 404 Not Found in 5ms (ActiveRecord: 2.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Customer with 'id'="4285ad68-7d11-4a4a-bf87-7e86ec5dbddb"):
+  
+app/controllers/customers_controller.rb:43:in `set_customer'
+Started GET "/addresses/5990a793-df8a-4c4d-8299-951051d9d5e2" for 127.0.0.1 at 2026-05-01 19:58:06 -0300
+Processing by AddressesController#show as */*
+  Parameters: {"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP", "id"=>"5990a793-df8a-4c4d-8299-951051d9d5e2"}
+  [1m[36mAddress Load (2.3ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" WHERE "addresses"."id" = '5990a793-df8a-4c4d-8299-951051d9d5e2' LIMIT 1 /*action='show',application='Opj',controller='addresses'*/[0m
+  ↳ app/controllers/addresses_controller.rb:43:in `set_address'
+Completed 200 OK in 5ms (Views: 0.4ms | ActiveRecord: 2.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/customers" for 127.0.0.1 at 2026-05-01 20:07:53 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (4.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+Processing by CustomersController#create as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-03", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-03", "phone"=>"11999999999"}}
+[31mUnpermitted parameter: :customer. Context: { controller: CustomersController, action: create, request: #<ActionDispatch::Request:0x00007d1f79db4a78>, params: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-03", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "controller"=>"customers", "action"=>"create", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-03", "phone"=>"11999999999"}} }[0m
+Completed 500 Internal Server Error in 19ms (ActiveRecord: 109.4ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+ActiveModel::UnknownAttributeError (unknown attribute 'address_attributes' for Customer.)
+Caused by: NoMethodError (undefined method `address_attributes=' for #<Customer id: nil, address_id: nil, name: "João Silva", email: [FILTERED], tax_id: "123.456.789-03", phone: "11999999999", created_at: nil, updated_at: nil>)
+
+Information for: ActiveModel::UnknownAttributeError (unknown attribute 'address_attributes' for Customer.):
+  
+app/controllers/customers_controller.rb:17:in `create'
+
+Information for cause: NoMethodError (undefined method `address_attributes=' for #<Customer id: nil, address_id: nil, name: "João Silva", email: [FILTERED], tax_id: "123.456.789-03", phone: "11999999999", created_at: nil, updated_at: nil>):
+  
+app/controllers/customers_controller.rb:17:in `create'
+Started POST "/customers" for 127.0.0.1 at 2026-05-01 20:08:44 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (4.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+Processing by CustomersController#create as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-03", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-03", "phone"=>"11999999999"}}
+[31mUnpermitted parameter: :customer. Context: { controller: CustomersController, action: create, request: #<ActionDispatch::Request:0x00007b21be594920>, params: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-03", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "controller"=>"customers", "action"=>"create", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-03", "phone"=>"11999999999"}} }[0m
+Completed 500 Internal Server Error in 20ms (ActiveRecord: 97.7ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+ActiveModel::UnknownAttributeError (unknown attribute 'address_attributes' for Customer.)
+Caused by: NoMethodError (undefined method `address_attributes=' for #<Customer id: nil, address_id: nil, name: "João Silva", email: [FILTERED], tax_id: "123.456.789-03", phone: "11999999999", created_at: nil, updated_at: nil>)
+
+Information for: ActiveModel::UnknownAttributeError (unknown attribute 'address_attributes' for Customer.):
+  
+app/controllers/customers_controller.rb:17:in `create'
+
+Information for cause: NoMethodError (undefined method `address_attributes=' for #<Customer id: nil, address_id: nil, name: "João Silva", email: [FILTERED], tax_id: "123.456.789-03", phone: "11999999999", created_at: nil, updated_at: nil>):
+  
+app/controllers/customers_controller.rb:17:in `create'
+Started POST "/customers" for 127.0.0.1 at 2026-05-01 20:10:32 -0300
+Processing by CustomersController#create as */*
+  Parameters: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-03", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-03", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}}
+[31mUnpermitted parameter: :customer. Context: { controller: CustomersController, action: create, request: #<ActionDispatch::Request:0x00007b21bd999120>, params: {"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-03", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}, "controller"=>"customers", "action"=>"create", "customer"=>{"name"=>"João Silva", "email"=>"[FILTERED]", "tax_id"=>"123.456.789-03", "phone"=>"11999999999", "address_attributes"=>{"link"=>"https://maps.example.com/123", "place"=>"Edifício Central", "cep"=>"01310-100", "number"=>"1000", "address"=>"Av. Paulista", "complement"=>"Apto 42", "neighborhood"=>"Bela Vista", "city"=>"São Paulo", "state"=>"SP"}}} }[0m
+  [1m[36mTRANSACTION (1.5ms)[0m  [1m[35mBEGIN /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:19:in `create'
+  [1m[36mAddress Create (6.6ms)[0m  [1m[32mINSERT INTO "addresses" ("link", "place", "cep", "number", "address", "complement", "neighborhood", "city", "state", "created_at", "updated_at") VALUES ('https://maps.example.com/123', 'Edifício Central', '01310-100', '1000', 'Av. Paulista', 'Apto 42', 'Bela Vista', 'São Paulo', 'SP', '2026-05-01 23:10:32.336238', '2026-05-01 23:10:32.336238') RETURNING "id" /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:19:in `create'
+  [1m[36mCustomer Create (3.2ms)[0m  [1m[32mINSERT INTO "customers" ("address_id", "name", "email", "tax_id", "phone", "created_at", "updated_at") VALUES ('3d11bfaf-9342-421d-860e-96ac787ceebd', 'João Silva', 'joa2o@email.com', '123.456.789-03', '11999999999', '2026-05-01 23:10:32.347825', '2026-05-01 23:10:32.347825') RETURNING "id" /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:19:in `create'
+  [1m[36mTRANSACTION (4.6ms)[0m  [1m[35mCOMMIT /*action='create',application='Opj',controller='customers'*/[0m
+  ↳ app/controllers/customers_controller.rb:19:in `create'
+Completed 201 Created in 67ms (Views: 0.7ms | ActiveRecord: 33.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
