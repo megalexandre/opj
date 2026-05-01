@@ -131,8 +131,6 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.19.4)
-    jsonapi-serializer (2.2.0)
-      activesupport (>= 4.2)
     kamal (2.11.0)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -196,6 +194,7 @@ GEM
     nokogiri (1.19.3-x86_64-linux-musl)
       racc (~> 1.4)
     ostruct (0.6.3)
+    pagy (9.4.0)
     parallel (1.28.0)
     parser (3.3.11.1)
       ast (~> 2.4.1)
@@ -366,8 +365,8 @@ DEPENDENCIES
   bundler-audit
   debug
   image_processing (~> 1.2)
-  jsonapi-serializer
   kamal
+  pagy (~> 9.3)
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 8.1.2)

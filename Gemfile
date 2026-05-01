@@ -5,6 +5,12 @@ gem "rails", "~> 8.1.2"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 gem "activerecord-postgis-adapter"
+
+# gem pagination
+gem "pagy", "~> 9.3"
+
+
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]

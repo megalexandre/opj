@@ -229,3 +229,89 @@ Processing by AddressesController#update as */*
 Completed 200 OK in 24ms (Views: 0.3ms | ActiveRecord: 17.5ms (2 queries, 0 cached) | GC: 0.6ms)
 
 
+  [1m[36mAddress Count (59.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "addresses" /*application='Opj'*/[0m
+  [1m[36mAddress Load (2.4ms)[0m  [1m[34mSELECT "addresses".* FROM "addresses" /* loading for pp */ LIMIT 11 /*application='Opj'*/[0m
+  [1m[35m (1.4ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7217190273951417795) /*application='Opj'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (3.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (2.6ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Opj'*/[0m
+Migrating to CreateCustomers (20260501223121)
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mBEGIN /*application='Opj'*/[0m
+  [1m[35m (8.7ms)[0m  [1m[35mCREATE TABLE "customers" ("id" bigserial primary key, "address_id" bigint NOT NULL, "name" character varying, "email" character varying, "tax_id" character varying, "phone" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_3f9404ba26"
+FOREIGN KEY ("address_id")
+  REFERENCES "addresses" ("id")
+) /*application='Opj'*/[0m
+  [1m[36mTRANSACTION (0.9ms)[0m  [1m[31mROLLBACK /*application='Opj'*/[0m
+  [1m[35m (1.9ms)[0m  [1m[34mSELECT pg_advisory_unlock(7217190273951417795) /*application='Opj'*/[0m
+  [1m[35m (1.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7217190273951417795) /*application='Opj'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (3.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (2.9ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Opj'*/[0m
+Migrating to CreateCustomers (20260501223121)
+  [1m[36mTRANSACTION (1.4ms)[0m  [1m[35mBEGIN /*application='Opj'*/[0m
+  [1m[35m (9.0ms)[0m  [1m[35mCREATE TABLE "customers" ("id" bigserial primary key, "address_id" bigint NOT NULL, "name" character varying, "email" character varying, "tax_id" character varying, "phone" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_3f9404ba26"
+FOREIGN KEY ("address_id")
+  REFERENCES "addresses" ("id")
+) /*application='Opj'*/[0m
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[31mROLLBACK /*application='Opj'*/[0m
+  [1m[35m (1.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(7217190273951417795) /*application='Opj'*/[0m
+  [1m[35m (1.5ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7217190273951417795) /*application='Opj'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (3.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (3.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Opj'*/[0m
+Migrating to CreateCustomers (20260501223121)
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mBEGIN /*application='Opj'*/[0m
+  [1m[35m (9.5ms)[0m  [1m[35mCREATE TABLE "customers" ("id" uuid DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY, "address_id" uuid NOT NULL, "name" character varying, "email" character varying, "tax_id" character varying, "phone" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_3f9404ba26"
+FOREIGN KEY ("address_id")
+  REFERENCES "addresses" ("id")
+) /*application='Opj'*/[0m
+  [1m[35m (2.6ms)[0m  [1m[35mCREATE INDEX "index_customers_on_address_id" ON "customers" ("address_id") /*application='Opj'*/[0m
+  [1m[35m (2.5ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_customers_on_email" ON "customers" ("email") /*application='Opj'*/[0m
+  [1m[35m (2.5ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_customers_on_tax_id" ON "customers" ("tax_id") /*application='Opj'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (1.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260501223121') RETURNING "version" /*application='Opj'*/[0m
+  [1m[36mTRANSACTION (4.6ms)[0m  [1m[35mCOMMIT /*application='Opj'*/[0m
+  [1m[35m (2.0ms)[0m  [1m[34mSELECT pg_advisory_unlock(7217190273951417795) /*application='Opj'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[35mSET search_path TO public /*application='Opj'*/[0m
+  [1m[35mSQL (1.6ms)[0m  [1m[35mSET search_path TO "$user", public, topology, tiger /*application='Opj'*/[0m
+  [1m[35mSQL (1.4ms)[0m  [1m[35mSET search_path TO topology /*application='Opj'*/[0m
+  [1m[35mSQL (1.3ms)[0m  [1m[35mSET search_path TO "$user", public, topology, tiger /*application='Opj'*/[0m
+  [1m[35mSQL (1.4ms)[0m  [1m[35mSET search_path TO tiger /*application='Opj'*/[0m
+  [1m[35mSQL (1.5ms)[0m  [1m[35mSET search_path TO "$user", public, topology, tiger /*application='Opj'*/[0m
+  [1m[35mSQL (1.6ms)[0m  [1m[35mSET search_path TO public /*application='Opj'*/[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[35mSET search_path TO "$user", public, topology, tiger /*application='Opj'*/[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[35mSET search_path TO topology /*application='Opj'*/[0m
+  [1m[35mSQL (1.1ms)[0m  [1m[35mSET search_path TO "$user", public, topology, tiger /*application='Opj'*/[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[35mSET search_path TO tiger /*application='Opj'*/[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[35mSET search_path TO "$user", public, topology, tiger /*application='Opj'*/[0m
+Started POST "/customers" for 127.0.0.1 at 2026-05-01 19:37:35 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (4.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Opj'*/[0m
+  
+NameError (uninitialized constant ApplicationController::Pagy):
+  
+app/controllers/application_controller.rb:2:in `<class:ApplicationController>'
+app/controllers/application_controller.rb:1:in `<main>'
+app/controllers/customers_controller.rb:1:in `<main>'
+Started POST "/customers" for 127.0.0.1 at 2026-05-01 19:37:58 -0300
+  
+NameError (uninitialized constant ApplicationController::Pagy):
+  
+app/controllers/application_controller.rb:2:in `<class:ApplicationController>'
+app/controllers/application_controller.rb:1:in `<main>'
+app/controllers/customers_controller.rb:1:in `<main>'
+Error occurred while parsing request parameters.
+Contents:
+
+{
+    "name": "João Silva",
+    "email": "joao@email.com",
+    "tax_id": "123.456.789-00",
+    "phone": "11999999999",
+    "address_attributes": {
+    "link": "https://maps.example.com/123",
+    "place": "Edifício Central",
+    "cep": "01310-100",
+    "number": "1000",
+    "address": "Av. Paulista",
+    "complement": "Apto 42",
+    "neighborhood": "Bela Vista",
+    "city": "São Paulo",
+    "state": "SP"
+}
