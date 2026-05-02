@@ -45,8 +45,11 @@ class CustomersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def customer_params
-      params.permit(:address_id, :name, :email, :tax_id, :phone,
+      raw = params.permit(:address_id, :name, :email, :tax_id, :phone,
+        address: [ :link, :place, :cep, :number, :address, :complement, :neighborhood, :city, :state ],
         address_attributes: [ :link, :place, :cep, :number, :address, :complement, :neighborhood, :city, :state ]
       )
+      raw[:address_attributes] ||= raw.delete(:address) if raw[:address]
+      raw
     end
 end
