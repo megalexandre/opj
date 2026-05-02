@@ -1,0 +1,23 @@
+# Dependências locais — gems são instaladas no build via bundle install
+vendor/bundle
+
+# Git
+.git
+.github
+
+# Logs e temporários
+log/
+tmp/
+storage/
+
+# Testes e análise estática
+spec/
+test/
+coverage/
+
+# Dados locais e gerados
+volume/
+swagger/
+.byebug_history
+.env*
+*.md
