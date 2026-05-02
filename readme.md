@@ -14,35 +14,5 @@ rails g scaffold Project client:references{uuid} address:references{uuid} utilit
 
 
 
-/**/
-
-@Entity
-@Table(name = "concessionaires")
-data class CompanyEntity(
-
-    @Id
-    @Column(name = "id", nullable = false, updatable = false)
-    var id: UUID,
-
-    @Column(name = "name", nullable = false)
-    var name: String,
-
-    @Column(name = "acronym")
-    var acronym: String?,
-
-    @Column(name = "code")
-    var code: String?,
-
-    @Column(name = "region")
-    var region: String?,
-
-    @Column(name = "phone")
-    var phone: String?,
-
-    @Column(name = "email")
-    var email: String?,
-
-    @Column(name = "active", nullable = false)
-    var active: Boolean,
-
-) {
+para gerar o swagger apos editar a rotas
+RAILS_ENV=test PATTERN="spec/swagger/**/*_spec.rb" rails rswag:specs:swaggerize

@@ -212,6 +212,21 @@ CREATE TABLE public.uploads (
 
 
 --
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    name character varying NOT NULL,
+    email character varying NOT NULL,
+    password_digest character varying NOT NULL,
+    profile character varying DEFAULT 'user'::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: addresses addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -268,6 +283,14 @@ ALTER TABLE ONLY public.uploads
 
 
 --
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: index_customers_on_address_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -310,6 +333,13 @@ CREATE INDEX index_uploads_on_item_id ON public.uploads USING btree (item_id);
 
 
 --
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
+
+
+--
 -- Name: customers fk_rails_3f9404ba26; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -340,6 +370,7 @@ ALTER TABLE ONLY public.projects
 SET search_path TO "$user", public, topology, tiger;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260502200000'),
 ('20260502113002'),
 ('20260502021250'),
 ('20260502020000'),

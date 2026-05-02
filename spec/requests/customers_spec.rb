@@ -1,104 +1,152 @@
-require "rails_helper"
+require 'swagger_helper'
 
-RSpec.describe "Customers", type: :request do
-  let(:customer) { create(:customer) }
+RSpec.describe 'Customers', type: :request do
+  include_context 'with auth token'
 
-  describe "GET /customers" do
-    it "returns paginated customers with metadata" do
-      create_list(:customer, 3)
+  path '/customers' do
+    get 'Lista todos os clientes' do
+      tags 'Customers'
+      produces 'application/json'
+      security [{ bearerAuth: [] }]
+      parameter name: :Authorization, in: :header, type: :string, required: true, description: 'Bearer token'
 
-      get "/customers"
-
-      expect(response).to have_http_status(:ok)
-      body = JSON.parse(response.body)
-      expect(body["data"].size).to eq(3)
-      expect(body["pagination"]).to include("count", "page", "items")
+      response '200', 'lista de clientes' do
+        schema type: :array, items: { '$ref' => '#/components/schemas/Customer' }
+        run_test!
+      end
     end
 
-    it "respects page and items params" do
-      create_list(:customer, 5)
+    post 'Cria um cliente' do
+      tags 'Customers'
+      consumes 'application/json'
+      produces 'application/json'
+      security [{ bearerAuth: [] }]
+      parameter name: :Authorization, in: :header, type: :string, required: true, description: 'Bearer token'
 
-      get "/customers", params: { page: 1, items: 2 }
-
-      body = JSON.parse(response.body)
-      expect(body["data"].size).to eq(2)
-      expect(body["pagination"]["items"]).to eq(2)
-    end
-  end
-
-  describe "GET /customers/:id" do
-    it "returns the customer" do
-      get "/customers/#{customer.id}"
-
-      expect(response).to have_http_status(:ok)
-      body = JSON.parse(response.body)
-      expect(body["id"]).to eq(customer.id)
-      expect(body["name"]).to eq(customer.name)
-    end
-
-    it "returns 404 for unknown id" do
-      get "/customers/00000000-0000-0000-0000-000000000000"
-
-      expect(response).to have_http_status(:not_found)
-    end
-  end
-
-  describe "POST /customers" do
-    context "with valid params" do
-      let(:valid_params) do
-        {
-          name: "Maria Souza",
-          email: "maria@exemplo.com",
-          tax_id: "98765432100",
-          phone: "11988887777",
+      parameter name: :customer, in: :body, schema: {
+        type: :object,
+        properties: {
+          name:       { type: :string },
+          email:      { type: :string },
+          tax_id:     { type: :string },
+          phone:      { type: :string },
+          address_id: { type: :string, format: :uuid, description: 'Vincular endereço existente' },
           address_attributes: {
-            place: "Rua Augusta",
-            number: "500",
-            neighborhood: "Consolação",
-            city: "São Paulo",
-            state: "SP",
-            cep: "01305-000"
+            type: :object,
+            description: 'Criar endereço junto com o cliente',
+            properties: {
+              place: { type: :string }, cep: { type: :string }, number: { type: :string },
+              city:  { type: :string }, state: { type: :string }
+            }
           }
         }
+      }
+
+      response '201', 'cliente criado' do
+        let(:customer) do
+          address = create(:address)
+          { name: 'João', email: 'joao@test.com', phone: '31999999999', address_id: address.id }
+        end
+        schema '$ref' => '#/components/schemas/Customer'
+        run_test!
       end
 
-      it "creates a customer and returns 201" do
-        expect {
-          post "/customers", params: valid_params, as: :json
-        }.to change(Customer, :count).by(1)
-
-        expect(response).to have_http_status(:created)
-        expect(JSON.parse(response.body)["email"]).to eq("maria@exemplo.com")
+      response '422', 'e-mail ou CPF/CNPJ já cadastrado' do
+        before { create(:customer, email: 'duplicado@test.com') }
+        let(:customer) { { name: 'Outro', email: 'duplicado@test.com' } }
+        schema '$ref' => '#/components/schemas/Error'
+        run_test!
       end
     end
+  end
 
-    context "with duplicate email" do
-      it "returns 422" do
-        post "/customers", params: { name: "Dup", email: customer.email, address_id: customer.address_id }, as: :json
+  path '/customers/paginate' do
+    get 'Lista clientes paginados' do
+      tags 'Customers'
+      produces 'application/json'
+      security [{ bearerAuth: [] }]
+      parameter name: :Authorization, in: :header, type: :string, required: true, description: 'Bearer token'
 
-        expect(response).to have_http_status(:unprocessable_content)
+      parameter name: :page,  in: :query, type: :integer, required: false, description: 'Página (começa em 1)'
+      parameter name: :items, in: :query, type: :integer, required: false, description: 'Itens por página'
+
+      response '200', 'página de clientes' do
+        schema allOf: [
+          { '$ref' => '#/components/schemas/Page' },
+          {
+            type: :object,
+            properties: {
+              content: { type: :array, items: { '$ref' => '#/components/schemas/Customer' } }
+            }
+          }
+        ]
+        run_test!
       end
     end
   end
 
-  describe "PATCH /customers/:id" do
-    it "updates the customer" do
-      patch "/customers/#{customer.id}", params: { name: "Novo Nome" }, as: :json
+  path '/customers/{id}' do
+    parameter name: :id, in: :path, type: :string, format: :uuid, required: true
 
-      expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body)["name"]).to eq("Novo Nome")
+    get 'Busca um cliente' do
+      tags 'Customers'
+      produces 'application/json'
+      security [{ bearerAuth: [] }]
+      parameter name: :Authorization, in: :header, type: :string, required: true, description: 'Bearer token'
+
+      response '200', 'cliente encontrado' do
+        let(:id) { create(:customer).id }
+        schema '$ref' => '#/components/schemas/Customer'
+        run_test!
+      end
+
+      response '404', 'não encontrado' do
+        let(:id) { SecureRandom.uuid }
+        schema '$ref' => '#/components/schemas/Error'
+        run_test!
+      end
     end
-  end
 
-  describe "DELETE /customers/:id" do
-    it "destroys the customer and its address" do
-      id = customer.id
+    patch 'Atualiza um cliente' do
+      tags 'Customers'
+      consumes 'application/json'
+      produces 'application/json'
+      security [{ bearerAuth: [] }]
+      parameter name: :Authorization, in: :header, type: :string, required: true, description: 'Bearer token'
 
-      expect {
-        delete "/customers/#{id}"
-      }.to change(Customer, :count).by(-1)
+      parameter name: :customer, in: :body, schema: {
+        type: :object,
+        properties: {
+          name:   { type: :string },
+          email:  { type: :string },
+          tax_id: { type: :string },
+          phone:  { type: :string }
+        }
+      }
 
-      expect(response).to have_http_status(:no_content)
+      response '200', 'cliente atualizado' do
+        let(:id)       { create(:customer).id }
+        let(:customer) { { name: 'Nome Atualizado', phone: '11988887777' } }
+        schema '$ref' => '#/components/schemas/Customer'
+        run_test!
+      end
+    end
+
+    delete 'Remove um cliente' do
+      tags 'Customers'
+      security [{ bearerAuth: [] }]
+      parameter name: :Authorization, in: :header, type: :string, required: true, description: 'Bearer token'
+
+      response '204', 'removido com sucesso' do
+        let(:id) { create(:customer).id }
+        run_test!
+      end
+
+      response '404', 'não encontrado' do
+        let(:id) { SecureRandom.uuid }
+        schema '$ref' => '#/components/schemas/Error'
+        run_test!
+      end
     end
   end
 end

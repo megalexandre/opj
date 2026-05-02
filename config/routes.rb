@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
+
+  scope '/auth' do
+    post 'register', to: 'auth#register'
+    post 'login',    to: 'auth#login'
+    get  'me',       to: 'auth#me'
+  end
+
   resources :projects
 
   resources :uploads, only: %i[index create destroy] do

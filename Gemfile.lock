@@ -78,6 +78,8 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
+    addressable (2.9.0)
+      public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
     aws-eventstream (1.4.0)
     aws-partitions (1.1244.0)
@@ -99,6 +101,7 @@ GEM
     aws-sigv4 (1.12.1)
       aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.3.0)
+    bcrypt (3.1.22)
     bcrypt_pbkdf (1.1.2)
     bcrypt_pbkdf (1.1.2-arm64-darwin)
     bcrypt_pbkdf (1.1.2-x86_64-darwin)
@@ -157,6 +160,11 @@ GEM
       reline (>= 0.4.2)
     jmespath (1.6.2)
     json (2.19.4)
+    json-schema (6.2.0)
+      addressable (~> 2.8)
+      bigdecimal (>= 3.1, < 5)
+    jwt (2.10.2)
+      base64
     kamal (2.11.0)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -239,6 +247,7 @@ GEM
     psych (5.3.1)
       date
       stringio
+    public_suffix (7.0.5)
     puma (8.0.1)
       nio4r (~> 2.0)
     raabro (1.4.0)
@@ -311,6 +320,17 @@ GEM
       rspec-mocks (>= 3.13.0, < 5.0.0)
       rspec-support (>= 3.13.0, < 5.0.0)
     rspec-support (3.13.7)
+    rswag-api (2.17.0)
+      activesupport (>= 5.2, < 8.2)
+      railties (>= 5.2, < 8.2)
+    rswag-specs (2.17.0)
+      activesupport (>= 5.2, < 8.2)
+      json-schema (>= 2.2, < 7.0)
+      railties (>= 5.2, < 8.2)
+      rspec-core (>= 2.14)
+    rswag-ui (2.17.0)
+      actionpack (>= 5.2, < 8.2)
+      railties (>= 5.2, < 8.2)
     rubocop (1.86.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -406,12 +426,14 @@ PLATFORMS
 DEPENDENCIES
   activerecord-postgis-adapter
   aws-sdk-s3 (~> 1.177)
+  bcrypt (~> 3.1.7)
   bootsnap
   brakeman
   bundler-audit
   debug
   factory_bot_rails
   image_processing (~> 1.2)
+  jwt (~> 2.9)
   kamal
   pagy (~> 9.3)
   pg (~> 1.1)
@@ -419,6 +441,9 @@ DEPENDENCIES
   rails (~> 8.1.2)
   rgeo
   rspec-rails
+  rswag-api
+  rswag-specs
+  rswag-ui
   rubocop-rails-omakase
   shoulda-matchers
   solid_cable

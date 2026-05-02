@@ -1,12 +1,15 @@
 class ApplicationController < ActionController::API
   include Paginatable
+  include Authenticatable
+
+  # StandardError deve ser declarado primeiro — Rails processa rescue_from em ordem inversa,
+  # então handlers mais específicos declarados depois têm prioridade sobre os genéricos.
+  rescue_from StandardError do |e|
+    render json: { message: e.message }, status: :internal_server_error
+  end
 
   rescue_from ActionDispatch::Http::Parameters::ParseError do
     render json: { message: "Invalid JSON body" }, status: :bad_request
-  end
-
-  rescue_from ActiveRecord::RecordNotFound do |e|
-    render json: { message: e.message }, status: :not_found
   end
 
   rescue_from ActiveRecord::RecordInvalid do |e|
@@ -17,7 +20,7 @@ class ApplicationController < ActionController::API
     render json: { message: "Invalid reference: associated record not found" }, status: :unprocessable_content
   end
 
-  rescue_from StandardError do |e|
-    render json: { message: e.message }, status: :internal_server_error
+  rescue_from ActiveRecord::RecordNotFound do |e|
+    render json: { message: e.message }, status: :not_found
   end
 end
