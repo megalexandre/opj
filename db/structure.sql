@@ -114,6 +114,22 @@ CREATE TABLE public.addresses (
 
 
 --
+-- Name: apportionments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.apportionments (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    service_id uuid NOT NULL,
+    consumer_unit character varying NOT NULL,
+    address character varying NOT NULL,
+    classification character varying NOT NULL,
+    percentage integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -204,6 +220,48 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: service_entry_items; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.service_entry_items (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    service_id uuid NOT NULL,
+    connection_type character varying NOT NULL,
+    classification character varying NOT NULL,
+    quantity integer NOT NULL,
+    circuit_breaker character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: services; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.services (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    service_type character varying NOT NULL,
+    customer_id uuid NOT NULL,
+    concessionaire_id uuid NOT NULL,
+    opening_date date NOT NULL,
+    amount numeric NOT NULL,
+    discount_coupon_percentage integer,
+    observations character varying,
+    supply_voltage character varying,
+    coordinates public.geography(Point,4326),
+    generating_consumer_unit character varying,
+    pole_distance_over_30m boolean DEFAULT false NOT NULL,
+    construction_address_id uuid,
+    generating_address_id uuid,
+    created_by uuid,
+    updated_by uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: uploads; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -242,6 +300,14 @@ CREATE TABLE public.users (
 
 ALTER TABLE ONLY public.addresses
     ADD CONSTRAINT addresses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: apportionments apportionments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.apportionments
+    ADD CONSTRAINT apportionments_pkey PRIMARY KEY (id);
 
 
 --
@@ -285,6 +351,22 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: service_entry_items service_entry_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.service_entry_items
+    ADD CONSTRAINT service_entry_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: services services_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.services
+    ADD CONSTRAINT services_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: uploads uploads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -298,6 +380,13 @@ ALTER TABLE ONLY public.uploads
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_apportionments_on_service_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_apportionments_on_service_id ON public.apportionments USING btree (service_id);
 
 
 --
@@ -336,6 +425,41 @@ CREATE INDEX index_projects_on_client_id ON public.projects USING btree (client_
 
 
 --
+-- Name: index_service_entry_items_on_service_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_service_entry_items_on_service_id ON public.service_entry_items USING btree (service_id);
+
+
+--
+-- Name: index_services_on_concessionaire_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_services_on_concessionaire_id ON public.services USING btree (concessionaire_id);
+
+
+--
+-- Name: index_services_on_construction_address_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_services_on_construction_address_id ON public.services USING btree (construction_address_id);
+
+
+--
+-- Name: index_services_on_customer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_services_on_customer_id ON public.services USING btree (customer_id);
+
+
+--
+-- Name: index_services_on_generating_address_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_services_on_generating_address_id ON public.services USING btree (generating_address_id);
+
+
+--
 -- Name: index_uploads_on_item_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -347,6 +471,14 @@ CREATE INDEX index_uploads_on_item_id ON public.uploads USING btree (item_id);
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
+
+
+--
+-- Name: services fk_rails_05e47ee6c3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.services
+    ADD CONSTRAINT fk_rails_05e47ee6c3 FOREIGN KEY (construction_address_id) REFERENCES public.addresses(id);
 
 
 --
@@ -374,6 +506,14 @@ ALTER TABLE ONLY public.customers
 
 
 --
+-- Name: service_entry_items fk_rails_1795330033; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.service_entry_items
+    ADD CONSTRAINT fk_rails_1795330033 FOREIGN KEY (service_id) REFERENCES public.services(id);
+
+
+--
 -- Name: customers fk_rails_36c947031b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -398,11 +538,35 @@ ALTER TABLE ONLY public.addresses
 
 
 --
+-- Name: apportionments fk_rails_510793a5de; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.apportionments
+    ADD CONSTRAINT fk_rails_510793a5de FOREIGN KEY (service_id) REFERENCES public.services(id);
+
+
+--
+-- Name: services fk_rails_611e8e49f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.services
+    ADD CONSTRAINT fk_rails_611e8e49f6 FOREIGN KEY (generating_address_id) REFERENCES public.addresses(id);
+
+
+--
 -- Name: addresses fk_rails_727063a9f1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.addresses
     ADD CONSTRAINT fk_rails_727063a9f1 FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: services fk_rails_7d5c8b41f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.services
+    ADD CONSTRAINT fk_rails_7d5c8b41f6 FOREIGN KEY (concessionaire_id) REFERENCES public.concessionaires(id);
 
 
 --
@@ -427,6 +591,14 @@ ALTER TABLE ONLY public.projects
 
 ALTER TABLE ONLY public.uploads
     ADD CONSTRAINT fk_rails_bbbb2854e0 FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: services fk_rails_c2bef342a7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.services
+    ADD CONSTRAINT fk_rails_c2bef342a7 FOREIGN KEY (customer_id) REFERENCES public.customers(id);
 
 
 --
@@ -460,6 +632,9 @@ ALTER TABLE ONLY public.projects
 SET search_path TO "$user", public, tiger, topology;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260502210002'),
+('20260502210001'),
+('20260502210000'),
 ('20260502200001'),
 ('20260502200000'),
 ('20260502113002'),

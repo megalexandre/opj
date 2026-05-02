@@ -27,7 +27,11 @@ Rails.application.routes.draw do
     get "paginate", on: :collection
   end
 
-  resources :addresses do 
+  resources :addresses do
+    get "paginate", on: :collection
+  end
+
+  resources :services do
     get "paginate", on: :collection
   end
   

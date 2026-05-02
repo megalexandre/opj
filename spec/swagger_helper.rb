@@ -160,6 +160,60 @@ RSpec.configure do |config|
               user:  { '$ref' => '#/components/schemas/User' }
             },
             required: %w[token user]
+          },
+          Apportionment: {
+            type: :object,
+            properties: {
+              id:             { type: :string, format: :uuid },
+              service_id:     { type: :string, format: :uuid },
+              consumer_unit:  { type: :string },
+              address:        { type: :string },
+              classification: { type: :string },
+              percentage:     { type: :integer },
+              created_at:     { type: :string, format: :'date-time' },
+              updated_at:     { type: :string, format: :'date-time' }
+            },
+            required: %w[id service_id consumer_unit address classification percentage]
+          },
+          ServiceEntryItem: {
+            type: :object,
+            properties: {
+              id:              { type: :string, format: :uuid },
+              service_id:      { type: :string, format: :uuid },
+              connection_type: { type: :string },
+              classification:  { type: :string },
+              quantity:        { type: :integer },
+              circuit_breaker: { type: :string },
+              created_at:      { type: :string, format: :'date-time' },
+              updated_at:      { type: :string, format: :'date-time' }
+            },
+            required: %w[id service_id connection_type classification quantity circuit_breaker]
+          },
+          Service: {
+            type: :object,
+            properties: {
+              id:                         { type: :string, format: :uuid },
+              service_type:               { type: :string },
+              customer_id:                { type: :string, format: :uuid },
+              concessionaire_id:          { type: :string, format: :uuid },
+              opening_date:               { type: :string, format: :date },
+              amount:                     { type: :string },
+              discount_coupon_percentage: { type: :integer, nullable: true },
+              observations:               { type: :string, nullable: true },
+              supply_voltage:             { type: :string, nullable: true },
+              coordinates:                { '$ref' => '#/components/schemas/Coordinates' },
+              generating_consumer_unit:   { type: :string, nullable: true },
+              pole_distance_over_30m:     { type: :boolean },
+              construction_address_id:    { type: :string, format: :uuid, nullable: true },
+              generating_address_id:      { type: :string, format: :uuid, nullable: true },
+              apportionments:             { type: :array, items: { '$ref' => '#/components/schemas/Apportionment' } },
+              service_entry_items:        { type: :array, items: { '$ref' => '#/components/schemas/ServiceEntryItem' } },
+              created_at:                 { type: :string, format: :'date-time' },
+              updated_at:                 { type: :string, format: :'date-time' },
+              created_by:                 { type: :string, format: :uuid, nullable: true },
+              updated_by:                 { type: :string, format: :uuid, nullable: true }
+            },
+            required: %w[id service_type customer_id concessionaire_id opening_date amount pole_distance_over_30m]
           }
         }
       }
