@@ -3,13 +3,13 @@ class ConcessionairesController < ApplicationController
 
   # GET /concessionaires/paginate
   def paginate
-    @pagy, @concessionaires = pagy(Concessionaire.all)
+    @pagy, @concessionaires = pagy(apply_access_scope(Concessionaire.all))
     render_page @pagy, @concessionaires, serializer: ConcessionaireSerializer
   end
 
   # GET /concessionaires
   def index
-    @concessionaires = Concessionaire.all
+    @concessionaires = apply_access_scope(Concessionaire.all)
 
     render json: @concessionaires
   end
@@ -48,6 +48,7 @@ class ConcessionairesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_concessionaire
       @concessionaire = Concessionaire.find(params.expect(:id))
+      authorize_record!(@concessionaire)
     end
 
     # Only allow a list of trusted parameters through.

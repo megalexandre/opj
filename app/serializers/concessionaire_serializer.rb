@@ -14,7 +14,9 @@ class ConcessionaireSerializer
       email:      @concessionaire.email,
       active:     @concessionaire.active,
       created_at: @concessionaire.created_at,
-      updated_at: @concessionaire.updated_at
+      updated_at: @concessionaire.updated_at,
+      created_by: @concessionaire.created_by,
+      updated_by: @concessionaire.updated_by
     }
   end
 end

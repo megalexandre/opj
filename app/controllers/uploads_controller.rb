@@ -27,7 +27,7 @@ class UploadsController < ApplicationController
   # GET /uploads?item_id=<uuid>
   def index
     item_id  = params.expect(:item_id)
-    @uploads = Upload.where(item_id: item_id)
+    @uploads = apply_access_scope(Upload.where(item_id: item_id))
     render json: @uploads.map { |u| UploadSerializer.new(u).as_json }
   end
 
@@ -58,5 +58,6 @@ class UploadsController < ApplicationController
 
   def set_upload
     @upload = Upload.find(params.expect(:id))
+    authorize_record!(@upload)
   end
 end

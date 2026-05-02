@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects
   def index
-    @projects = Project.all
+    @projects = apply_access_scope(Project.all)
 
     render json: @projects.map { |p| ProjectSerializer.new(p).as_json }
   end
@@ -42,6 +42,7 @@ class ProjectsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_project
       @project = Project.find(params.expect(:id))
+      authorize_record!(@project)
     end
 
     # Only allow a list of trusted parameters through.

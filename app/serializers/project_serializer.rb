@@ -25,7 +25,9 @@ class ProjectSerializer
       coordinates: serialize_coordinates(@project.coordinates),
       services_names: @project.services_names,
       created_at: @project.created_at,
-      updated_at: @project.updated_at
+      updated_at: @project.updated_at,
+      created_by: @project.created_by,
+      updated_by: @project.updated_by
     }
   end
 

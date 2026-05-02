@@ -11,7 +11,9 @@ class UploadSerializer
       url_s3:     @upload.s3_url,
       size:       @upload.size,
       created_at: @upload.created_at,
-      updated_at: @upload.updated_at
+      updated_at: @upload.updated_at,
+      created_by: @upload.created_by,
+      updated_by: @upload.updated_by
     }
   end
 end

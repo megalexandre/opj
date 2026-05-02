@@ -16,7 +16,9 @@ class AddressSerializer
       city: @address.city,
       state: @address.state,
       created_at: @address.created_at,
-      updated_at: @address.updated_at
+      updated_at: @address.updated_at,
+      created_by: @address.created_by,
+      updated_by: @address.updated_by
     }
   end
 end

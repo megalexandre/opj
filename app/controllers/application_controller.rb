@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
   include Paginatable
   include Authenticatable
+  include Authorizable
 
   # StandardError deve ser declarado primeiro — Rails processa rescue_from em ordem inversa,
   # então handlers mais específicos declarados depois têm prioridade sobre os genéricos.

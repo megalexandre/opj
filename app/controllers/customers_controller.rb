@@ -3,13 +3,13 @@ class CustomersController < ApplicationController
 
   # GET /customers/paginate
   def paginate
-    @pagy, @customers = pagy(Customer.includes(:address).all)
+    @pagy, @customers = pagy(apply_access_scope(Customer.includes(:address).all))
     render_page @pagy, @customers, serializer: CustomerSerializer
   end
 
   # GET /customers
   def index
-    @customers = Customer.includes(:address).all
+    @customers = apply_access_scope(Customer.includes(:address).all)
     render json: @customers.map { CustomerSerializer.new(_1) }
   end
 
@@ -47,6 +47,7 @@ class CustomersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_customer
       @customer = Customer.includes(:address).find(params.expect(:id))
+      authorize_record!(@customer)
     end
 
     # Only allow a list of trusted parameters through.

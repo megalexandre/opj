@@ -12,7 +12,9 @@ class CustomerSerializer
       phone: @customer.phone,
       address: AddressSerializer.new(@customer.address).as_json,
       created_at: @customer.created_at,
-      updated_at: @customer.updated_at
+      updated_at: @customer.updated_at,
+      created_by: @customer.created_by,
+      updated_by: @customer.updated_by
     }
   end
 end
