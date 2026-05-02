@@ -3,8 +3,8 @@ class CustomersController < ApplicationController
 
   # GET /customers
   def index
-    @customers = Customer.includes(:address).all
-    render json: @customers.map { CustomerSerializer.new(_1) }
+    @pagy, @customers = pagy(Customer.includes(:address).all)
+    render_page @pagy, @customers, serializer: CustomerSerializer
   end
 
   # GET /customers/1

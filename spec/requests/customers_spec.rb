@@ -4,13 +4,25 @@ RSpec.describe "Customers", type: :request do
   let(:customer) { create(:customer) }
 
   describe "GET /customers" do
-    it "returns all customers" do
+    it "returns paginated customers with metadata" do
       create_list(:customer, 3)
 
       get "/customers"
 
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body).size).to eq(3)
+      body = JSON.parse(response.body)
+      expect(body["data"].size).to eq(3)
+      expect(body["pagination"]).to include("count", "page", "items")
+    end
+
+    it "respects page and items params" do
+      create_list(:customer, 5)
+
+      get "/customers", params: { page: 1, items: 2 }
+
+      body = JSON.parse(response.body)
+      expect(body["data"].size).to eq(2)
+      expect(body["pagination"]["items"]).to eq(2)
     end
   end
 
