@@ -1,10 +1,41 @@
 services:
   db:
     image: postgis/postgis:17-3.6-alpine
-    container_name: opj_postgres
     environment:
       POSTGRES_USER: API_USER
       POSTGRES_PASSWORD: API_PASSWORD
       POSTGRES_DB: API_DEVELOPMENT
     ports:
       - "5432:5432"
+
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=test
+      - MINIO_ROOT_PASSWORD=testtest
+    command: server /data --console-address ":9001"
+    volumes:
+      - "./volume:/data"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  s3-ui:
+    image: cloudlena/s3manager:latest
+    ports:
+      - "8090:8080"
+    environment:
+      - ENDPOINT=minio:9000
+      - ACCESS_KEY_ID=test
+      - SECRET_ACCESS_KEY=testtest
+      - USE_SSL=false
+      - FORCE_PATH_STYLE=true
+    depends_on:
+      minio:
+        condition: service_healthy
