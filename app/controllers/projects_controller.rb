@@ -5,12 +5,12 @@ class ProjectsController < ApplicationController
   def index
     @projects = Project.all
 
-    render json: @projects
+    render json: @projects.map { |p| ProjectSerializer.new(p).as_json }
   end
 
   # GET /projects/1
   def show
-    render json: @project
+    render json: ProjectSerializer.new(@project).as_json
   end
 
   # POST /projects
@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
 
     if @project.save
-      render json: @project, status: :created, location: @project
+      render json: ProjectSerializer.new(@project).as_json, status: :created, location: @project
     else
       render json: @project.errors, status: :unprocessable_content
     end
@@ -27,7 +27,7 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   def update
     if @project.update(project_params)
-      render json: @project
+      render json: ProjectSerializer.new(@project).as_json
     else
       render json: @project.errors, status: :unprocessable_content
     end
