@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_02_210002) do
   create_schema "tiger"
   create_schema "topology"
 
@@ -27,28 +27,158 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.string "city"
     t.string "complement"
     t.datetime "created_at", null: false
+    t.uuid "created_by"
     t.string "link"
     t.string "neighborhood"
     t.string "number"
     t.string "place"
     t.string "state"
     t.datetime "updated_at", null: false
+    t.uuid "updated_by"
+  end
+
+  create_table "public.apportionments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "address", null: false
+    t.string "classification", null: false
+    t.string "consumer_unit", null: false
+    t.datetime "created_at", null: false
+    t.integer "percentage", null: false
+    t.uuid "service_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["service_id"], name: "index_apportionments_on_service_id"
+  end
+
+  create_table "public.concessionaires", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "acronym"
+    t.boolean "active"
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.uuid "created_by"
+    t.string "email"
+    t.string "name"
+    t.string "phone"
+    t.string "region"
+    t.datetime "updated_at", null: false
+    t.uuid "updated_by"
   end
 
   create_table "public.customers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "address_id", null: false
     t.datetime "created_at", null: false
+    t.uuid "created_by"
     t.string "email"
     t.string "name"
     t.string "phone"
     t.string "tax_id"
     t.datetime "updated_at", null: false
+    t.uuid "updated_by"
     t.index ["address_id"], name: "index_customers_on_address_id"
     t.index ["email"], name: "index_customers_on_email", unique: true
     t.index ["tax_id"], name: "index_customers_on_tax_id", unique: true
   end
 
+  create_table "public.projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "address_id"
+    t.decimal "amount"
+    t.uuid "client_id", null: false
+    t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
+    t.datetime "created_at", null: false
+    t.uuid "created_by"
+    t.string "customer_class", null: false
+    t.string "dc_protection"
+    t.string "description", limit: 1024
+    t.boolean "fast_track", default: false, null: false
+    t.string "framework", null: false
+    t.string "integrator", null: false
+    t.string "modality", null: false
+    t.string "project_type", null: false
+    t.string "services_names", array: true
+    t.string "status"
+    t.float "system_power"
+    t.string "unit_control", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "updated_by"
+    t.string "utility_company", null: false
+    t.string "utility_protocol", null: false
+    t.index ["address_id"], name: "index_projects_on_address_id"
+    t.index ["client_id"], name: "index_projects_on_client_id"
+  end
+
+  create_table "public.service_entry_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "circuit_breaker", null: false
+    t.string "classification", null: false
+    t.string "connection_type", null: false
+    t.datetime "created_at", null: false
+    t.integer "quantity", null: false
+    t.uuid "service_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["service_id"], name: "index_service_entry_items_on_service_id"
+  end
+
+  create_table "public.services", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "amount", null: false
+    t.uuid "concessionaire_id", null: false
+    t.uuid "construction_address_id"
+    t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
+    t.datetime "created_at", null: false
+    t.uuid "created_by"
+    t.uuid "customer_id", null: false
+    t.integer "discount_coupon_percentage"
+    t.uuid "generating_address_id"
+    t.string "generating_consumer_unit"
+    t.string "observations"
+    t.date "opening_date", null: false
+    t.boolean "pole_distance_over_30m", default: false, null: false
+    t.string "service_type", null: false
+    t.string "supply_voltage"
+    t.datetime "updated_at", null: false
+    t.uuid "updated_by"
+    t.index ["concessionaire_id"], name: "index_services_on_concessionaire_id"
+    t.index ["customer_id"], name: "index_services_on_customer_id"
+  end
+
+  create_table "public.uploads", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid "created_by"
+    t.string "filename", null: false
+    t.uuid "item_id", null: false
+    t.string "s3_key", null: false
+    t.string "s3_url", null: false
+    t.bigint "size", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.uuid "updated_by"
+    t.index ["item_id"], name: "index_uploads_on_item_id"
+  end
+
+  create_table "public.users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email", null: false
+    t.string "name", null: false
+    t.string "password_digest", null: false
+    t.string "profile", default: "user", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+  end
+
+  add_foreign_key "public.addresses", "public.users", column: "created_by"
+  add_foreign_key "public.addresses", "public.users", column: "updated_by"
+  add_foreign_key "public.apportionments", "public.services"
+  add_foreign_key "public.concessionaires", "public.users", column: "created_by"
+  add_foreign_key "public.concessionaires", "public.users", column: "updated_by"
   add_foreign_key "public.customers", "public.addresses"
+  add_foreign_key "public.customers", "public.users", column: "created_by"
+  add_foreign_key "public.customers", "public.users", column: "updated_by"
+  add_foreign_key "public.projects", "public.addresses"
+  add_foreign_key "public.projects", "public.customers", column: "client_id"
+  add_foreign_key "public.projects", "public.users", column: "created_by"
+  add_foreign_key "public.projects", "public.users", column: "updated_by"
+  add_foreign_key "public.service_entry_items", "public.services"
+  add_foreign_key "public.services", "public.addresses", column: "construction_address_id"
+  add_foreign_key "public.services", "public.addresses", column: "generating_address_id"
+  add_foreign_key "public.services", "public.concessionaires"
+  add_foreign_key "public.services", "public.customers"
+  add_foreign_key "public.uploads", "public.users", column: "created_by"
+  add_foreign_key "public.uploads", "public.users", column: "updated_by"
 
 
   create_table "tiger.addr", primary_key: "gid", id: :serial, force: :cascade do |t|
@@ -90,7 +220,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.string "rtohn", limit: 12
     t.string "rtotyp", limit: 1
     t.string "statefp", limit: 2, null: false
-    t.geometry "the_geom", limit: {:srid=>4329, :type=>"line_string"}
+    t.geometry "the_geom", limit: {:srid=>0, :type=>"geometry"}
     t.bigint "tlid"
     t.string "zipl", limit: 5
     t.string "zipr", limit: 5
@@ -98,6 +228,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.index ["tlid"], name: "idx_addrfeat_tlid"
     t.index ["zipl"], name: "idx_addrfeat_zipl"
     t.index ["zipr"], name: "idx_addrfeat_zipr"
+    t.check_constraint "public.geometrytype(the_geom) = 'LINESTRING'::text OR the_geom IS NULL", name: "enforce_geotype_the_geom"
+    t.check_constraint "public.st_ndims(the_geom) = 2", name: "enforce_dims_the_geom"
+    t.check_constraint "public.st_srid(the_geom) = 4269", name: "enforce_srid_the_geom"
   end
 
   create_table "tiger.bg", primary_key: "bg_id", id: { type: :string, limit: 12 }, comment: "block groups", force: :cascade do |t|
@@ -137,8 +270,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.string "name", limit: 100
     t.string "namelsad", limit: 100
     t.string "statefp", limit: 2
-    t.geometry "the_geom", limit: {:srid=>4269, :type=>"multi_polygon"}
+    t.geometry "the_geom", limit: {:srid=>0, :type=>"geometry"}
     t.index ["countyfp"], name: "idx_tiger_county"
+    t.check_constraint "public.geometrytype(the_geom) = 'MULTIPOLYGON'::text OR the_geom IS NULL", name: "enforce_geotype_geom"
+    t.check_constraint "public.st_ndims(the_geom) = 2", name: "enforce_dims_geom"
+    t.check_constraint "public.st_srid(the_geom) = 4269", name: "enforce_srid_geom"
     t.unique_constraint ["gid"], name: "uidx_county_gid"
   end
 
@@ -181,8 +317,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.string "nctadvfp", limit: 5
     t.string "nectafp", limit: 5
     t.string "statefp", limit: 2
-    t.geometry "the_geom", limit: {:srid=>4269, :type=>"multi_polygon"}
+    t.geometry "the_geom", limit: {:srid=>0, :type=>"geometry"}
     t.index ["the_geom"], name: "tige_cousub_the_geom_gist", using: :gist
+    t.check_constraint "public.geometrytype(the_geom) = 'MULTIPOLYGON'::text OR the_geom IS NULL", name: "enforce_geotype_the_geom"
+    t.check_constraint "public.st_ndims(the_geom) = 2", name: "enforce_dims_the_geom"
+    t.check_constraint "public.st_srid(the_geom) = 4269", name: "enforce_srid_the_geom"
     t.unique_constraint ["gid"], name: "uidx_cousub_gid"
   end
 
@@ -217,7 +356,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.string "statefp", limit: 2
     t.decimal "tfidl", precision: 10
     t.decimal "tfidr", precision: 10
-    t.geometry "the_geom", limit: {:srid=>4269, :type=>"multi_line_string"}
+    t.geometry "the_geom", limit: {:srid=>0, :type=>"geometry"}
     t.bigint "tlid"
     t.decimal "tnidf", precision: 10
     t.decimal "tnidt", precision: 10
@@ -227,6 +366,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.index ["countyfp"], name: "idx_tiger_edges_countyfp"
     t.index ["the_geom"], name: "idx_tiger_edges_the_geom_gist", using: :gist
     t.index ["tlid"], name: "idx_edges_tlid"
+    t.check_constraint "public.geometrytype(the_geom) = 'MULTILINESTRING'::text OR the_geom IS NULL", name: "enforce_geotype_the_geom"
+    t.check_constraint "public.st_ndims(the_geom) = 2", name: "enforce_dims_the_geom"
+    t.check_constraint "public.st_srid(the_geom) = 4269", name: "enforce_srid_the_geom"
   end
 
   create_table "tiger.faces", primary_key: "gid", id: :serial, force: :cascade do |t|
@@ -285,7 +427,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.string "tazce00", limit: 6
     t.string "tblkgpce", limit: 1
     t.decimal "tfid", precision: 10
-    t.geometry "the_geom", limit: {:srid=>4269, :type=>"multi_polygon"}
+    t.geometry "the_geom", limit: {:srid=>0, :type=>"geometry"}
     t.string "tractce", limit: 6
     t.string "tractce00", limit: 6
     t.string "tractce20", limit: 6
@@ -307,6 +449,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.index ["countyfp"], name: "idx_tiger_faces_countyfp"
     t.index ["tfid"], name: "idx_tiger_faces_tfid"
     t.index ["the_geom"], name: "tiger_faces_the_geom_gist", using: :gist
+    t.check_constraint "public.geometrytype(the_geom) = 'MULTIPOLYGON'::text OR the_geom IS NULL", name: "enforce_geotype_the_geom"
+    t.check_constraint "public.st_ndims(the_geom) = 2", name: "enforce_dims_the_geom"
+    t.check_constraint "public.st_srid(the_geom) = 4269", name: "enforce_srid_the_geom"
   end
 
   create_table "tiger.featnames", primary_key: "gid", id: :serial, force: :cascade do |t|
@@ -422,8 +567,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.string "placefp", limit: 5
     t.string "placens", limit: 8
     t.string "statefp", limit: 2
-    t.geometry "the_geom", limit: {:srid=>4269, :type=>"multi_polygon"}
+    t.geometry "the_geom", limit: {:srid=>0, :type=>"geometry"}
     t.index ["the_geom"], name: "tiger_place_the_geom_gist", using: :gist
+    t.check_constraint "public.geometrytype(the_geom) = 'MULTIPOLYGON'::text OR the_geom IS NULL", name: "enforce_geotype_the_geom"
+    t.check_constraint "public.st_ndims(the_geom) = 2", name: "enforce_dims_the_geom"
+    t.check_constraint "public.st_srid(the_geom) = 4269", name: "enforce_srid_the_geom"
     t.unique_constraint ["gid"], name: "uidx_tiger_place_gid"
   end
 
@@ -455,8 +603,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.string "region", limit: 2
     t.string "statens", limit: 8
     t.string "stusps", limit: 2, null: false
-    t.geometry "the_geom", limit: {:srid=>4269, :type=>"multi_polygon"}
+    t.geometry "the_geom", limit: {:srid=>0, :type=>"geometry"}
     t.index ["the_geom"], name: "idx_tiger_state_the_geom_gist", using: :gist
+    t.check_constraint "public.geometrytype(the_geom) = 'MULTIPOLYGON'::text OR the_geom IS NULL", name: "enforce_geotype_the_geom"
+    t.check_constraint "public.st_ndims(the_geom) = 2", name: "enforce_dims_the_geom"
+    t.check_constraint "public.st_srid(the_geom) = 4269", name: "enforce_srid_the_geom"
     t.unique_constraint ["gid"], name: "uidx_tiger_state_gid"
     t.unique_constraint ["stusps"], name: "uidx_tiger_state_stusps"
   end
@@ -530,7 +681,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.string "name", limit: 7
     t.string "namelsad", limit: 20
     t.string "statefp", limit: 2
-    t.geometry "the_geom", limit: {:srid=>0, :type=>"multi_polygon"}
+    t.geometry "the_geom", limit: {:srid=>0, :type=>"geometry"}
     t.string "tractce", limit: 6
     t.check_constraint "public.geometrytype(the_geom) = 'MULTIPOLYGON'::text OR the_geom IS NULL", name: "enforce_geotype_geom"
     t.check_constraint "public.st_ndims(the_geom) = 2", name: "enforce_dims_geom"
@@ -548,8 +699,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_223121) do
     t.string "mtfcc", limit: 5
     t.string "partflg", limit: 1
     t.string "statefp", limit: 2, null: false
-    t.geometry "the_geom", limit: {:srid=>4269, :type=>"multi_polygon"}
+    t.geometry "the_geom", limit: {:srid=>0, :type=>"geometry"}
     t.string "zcta5ce", limit: 5, null: false
+
+    t.check_constraint "public.geometrytype(the_geom) = 'MULTIPOLYGON'::text OR the_geom IS NULL", name: "enforce_geotype_the_geom"
+    t.check_constraint "public.st_ndims(the_geom) = 2", name: "enforce_dims_the_geom"
+    t.check_constraint "public.st_srid(the_geom) = 4269", name: "enforce_srid_the_geom"
+    t.unique_constraint ["gid"], name: "uidx_tiger_zcta5_gid"
   end
 
   create_table "tiger.zip_lookup", primary_key: "zip", id: :integer, default: nil, force: :cascade do |t|
