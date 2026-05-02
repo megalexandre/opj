@@ -10,6 +10,8 @@ gem "rgeo"
 # gem pagination
 gem "pagy", "~> 9.3"
 
+gem "aws-sdk-s3", "~> 1.177"
+
 
 
 # Use the Puma web server [https://github.com/puma/puma]

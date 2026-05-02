@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
   resources :projects
+
+  resources :uploads, only: %i[index create destroy] do
+    member do
+      get :download
+    end
+    collection do
+      delete "by_item/:item_id", action: :destroy_by_item
+    end
+  end
   
   resources :concessionaires do 
     get "paginate", on: :collection

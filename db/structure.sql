@@ -11,6 +11,41 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: tiger; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA tiger;
+
+
+--
+-- Name: topology; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA topology;
+
+
+--
+-- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
+
+
+--
+-- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS fuzzystrmatch WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION fuzzystrmatch; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION fuzzystrmatch IS 'determine similarities and distance between strings';
+
+
+--
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -22,6 +57,34 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 --
 
 COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
+
+
+--
+-- Name: postgis_tiger_geocoder; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder WITH SCHEMA tiger;
+
+
+--
+-- Name: EXTENSION postgis_tiger_geocoder; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION postgis_tiger_geocoder IS 'PostGIS tiger geocoder and reverse geocoder';
+
+
+--
+-- Name: postgis_topology; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_topology WITH SCHEMA topology;
+
+
+--
+-- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
 
 
 SET default_tablespace = '';
@@ -133,6 +196,22 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: uploads; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.uploads (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    item_id uuid NOT NULL,
+    filename character varying NOT NULL,
+    s3_url character varying NOT NULL,
+    s3_key character varying NOT NULL,
+    size bigint DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: addresses addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -181,6 +260,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: uploads uploads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.uploads
+    ADD CONSTRAINT uploads_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: index_customers_on_address_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -216,6 +303,13 @@ CREATE INDEX index_projects_on_client_id ON public.projects USING btree (client_
 
 
 --
+-- Name: index_uploads_on_item_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_uploads_on_item_id ON public.uploads USING btree (item_id);
+
+
+--
 -- Name: customers fk_rails_3f9404ba26; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -243,9 +337,10 @@ ALTER TABLE ONLY public.projects
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public;
+SET search_path TO "$user", public, topology, tiger;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260502113002'),
 ('20260502021250'),
 ('20260502020000'),
 ('20260502015902'),
