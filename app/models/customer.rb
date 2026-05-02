@@ -1,4 +1,6 @@
 class Customer < ApplicationRecord
+  include Auditable
+
   belongs_to :address, optional: true
   accepts_nested_attributes_for :address
 

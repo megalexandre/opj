@@ -11,6 +11,7 @@ module Authenticatable
     token = extract_token_from_header
     payload = JsonWebToken.decode(token)
     @current_user = User.find(payload[:user_id])
+    Current.user = @current_user
   rescue JWT::ExpiredSignature
     render json: { message: 'Token has expired' }, status: :unauthorized
   rescue JWT::DecodeError

@@ -59,7 +59,11 @@ RSpec.describe 'Projects', type: :request do
           }
         end
         schema '$ref' => '#/components/schemas/Project'
-        run_test!
+        run_test! do
+          created = Project.last
+          expect(created.created_by).to eq(user.id)
+          expect(created.updated_by).to eq(user.id)
+        end
       end
 
       response '422', 'cliente não encontrado' do
@@ -119,7 +123,9 @@ RSpec.describe 'Projects', type: :request do
         let(:id)      { create(:project).id }
         let(:project) { { status: 'aprovado', fast_track: true } }
         schema '$ref' => '#/components/schemas/Project'
-        run_test!
+        run_test! do
+          expect(Project.find(id).updated_by).to eq(user.id)
+        end
       end
     end
 

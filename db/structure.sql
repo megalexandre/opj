@@ -107,7 +107,9 @@ CREATE TABLE public.addresses (
     city character varying,
     state character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    created_by uuid,
+    updated_by uuid
 );
 
 
@@ -137,7 +139,9 @@ CREATE TABLE public.concessionaires (
     email character varying,
     active boolean,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    created_by uuid,
+    updated_by uuid
 );
 
 
@@ -153,7 +157,9 @@ CREATE TABLE public.customers (
     tax_id character varying,
     phone character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    created_by uuid,
+    updated_by uuid
 );
 
 
@@ -182,7 +188,9 @@ CREATE TABLE public.projects (
     coordinates public.geography(Point,4326),
     services_names character varying[],
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    created_by uuid,
+    updated_by uuid
 );
 
 
@@ -207,7 +215,9 @@ CREATE TABLE public.uploads (
     s3_key character varying NOT NULL,
     size bigint DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    created_by uuid,
+    updated_by uuid
 );
 
 
@@ -340,11 +350,59 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
+-- Name: projects fk_rails_0a17d69f55; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT fk_rails_0a17d69f55 FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: concessionaires fk_rails_0d8ecb3780; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.concessionaires
+    ADD CONSTRAINT fk_rails_0d8ecb3780 FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: customers fk_rails_0fceac5ea7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT fk_rails_0fceac5ea7 FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: customers fk_rails_36c947031b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT fk_rails_36c947031b FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
 -- Name: customers fk_rails_3f9404ba26; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.customers
     ADD CONSTRAINT fk_rails_3f9404ba26 FOREIGN KEY (address_id) REFERENCES public.addresses(id);
+
+
+--
+-- Name: addresses fk_rails_4aa2d705a5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.addresses
+    ADD CONSTRAINT fk_rails_4aa2d705a5 FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: addresses fk_rails_727063a9f1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.addresses
+    ADD CONSTRAINT fk_rails_727063a9f1 FOREIGN KEY (updated_by) REFERENCES public.users(id);
 
 
 --
@@ -364,12 +422,45 @@ ALTER TABLE ONLY public.projects
 
 
 --
+-- Name: uploads fk_rails_bbbb2854e0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.uploads
+    ADD CONSTRAINT fk_rails_bbbb2854e0 FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- Name: concessionaires fk_rails_e6922b7e80; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.concessionaires
+    ADD CONSTRAINT fk_rails_e6922b7e80 FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: uploads fk_rails_eb1978731c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.uploads
+    ADD CONSTRAINT fk_rails_eb1978731c FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: projects fk_rails_eda740735f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT fk_rails_eda740735f FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public, topology, tiger;
+SET search_path TO "$user", public, tiger, topology;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260502200001'),
 ('20260502200000'),
 ('20260502113002'),
 ('20260502021250'),

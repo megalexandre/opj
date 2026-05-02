@@ -1,4 +1,6 @@
 class Upload < ApplicationRecord
+  include Auditable
+
   validates :item_id,  presence: true
   validates :filename, presence: true
   validates :s3_url,   presence: true
