@@ -1,0 +1,2 @@
+class Concessionaire < ApplicationRecord
+end

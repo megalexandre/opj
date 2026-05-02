@@ -1,10 +1,16 @@
 class CustomersController < ApplicationController
   before_action :set_customer, only: %i[ show update destroy ]
 
-  # GET /customers
-  def index
+  # GET /customers/paginate
+  def paginate
     @pagy, @customers = pagy(Customer.includes(:address).all)
     render_page @pagy, @customers, serializer: CustomerSerializer
+  end
+
+  # GET /customers
+  def index
+    @customers = Customer.includes(:address).all
+    render json: @customers.map { CustomerSerializer.new(_1) }
   end
 
   # GET /customers/1

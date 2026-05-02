@@ -5,6 +5,7 @@ gem "rails", "~> 8.1.2"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 gem "activerecord-postgis-adapter"
+gem "rgeo"
 
 # gem pagination
 gem "pagy", "~> 9.3"

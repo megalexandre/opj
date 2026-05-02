@@ -1,6 +1,12 @@
 class AddressesController < ApplicationController
   before_action :set_address, only: %i[ show update destroy ]
 
+  # GET /addresses/paginate
+  def paginate
+    @pagy, @addresses = pagy(Address.all)
+    render_page @pagy, @addresses, serializer: AddressSerializer
+  end
+
   # GET /addresses
   def index
     @addresses = Address.all
