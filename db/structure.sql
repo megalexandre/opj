@@ -11,13 +11,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: api_data; Type: SCHEMA; Schema: -; Owner: -
---
-
-CREATE SCHEMA api_data;
-
-
---
 -- Name: public; Type: SCHEMA; Schema: -; Owner: -
 --
 
@@ -29,13 +22,6 @@ CREATE SCHEMA public;
 --
 
 COMMENT ON SCHEMA public IS 'standard public schema';
-
-
---
--- Name: tiger; Type: SCHEMA; Schema: -; Owner: -
---
-
-CREATE SCHEMA tiger;
 
 
 --
@@ -594,7 +580,7 @@ ALTER TABLE ONLY public.projects
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO api_data,public,tiger,topology;
+SET search_path TO public,tiger,topology;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20260502210003'),

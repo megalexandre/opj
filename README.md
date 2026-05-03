@@ -69,8 +69,8 @@ rails server -b 0.0.0.0
 ### Build e push
 
 ```bash
-docker build -t alexandreqrz/opj:0.0.2 . &&
-docker push alexandreqrz/opj:0.0.2
+docker build -t alexandreqrz/opj:latest . &&
+docker push alexandreqrz/opj:latest
 ```
 
 ### Subir tudo com docker-compose
