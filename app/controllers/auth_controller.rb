@@ -20,6 +20,11 @@ class AuthController < ApplicationController
     render json: user_json(current_user)
   end
 
+  def index
+    users = User.all
+    render json: users.map { |user| user_json(user) }
+  end 
+
   private
 
   def register_params = params.permit(:name, :email, :profile, :password, :password_confirmation)

@@ -105,7 +105,7 @@ bin/rails g scaffold_controller NomeDoRecurso campo1:tipo campo2:tipo
 Exemplo:
 
 ```bash
-bin/rails g scaffold_controller Address link:string place:string cep:string number:string address:string complement:string neighborhood:string city:string state:string
+bin/rails g scaffold_controller Users name:string 
 ```
 
 ### Gerar/atualizar a documentação Swagger
