@@ -3,8 +3,6 @@ class ApplicationController < ActionController::API
   include Authenticatable
   include Authorizable
 
-  # StandardError deve ser declarado primeiro — Rails processa rescue_from em ordem inversa,
-  # então handlers mais específicos declarados depois têm prioridade sobre os genéricos.
   rescue_from StandardError do |e|
     render json: { message: e.message }, status: :internal_server_error
   end

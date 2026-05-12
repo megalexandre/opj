@@ -3,13 +3,13 @@ class ConcessionairesController < ApplicationController
 
   # GET /concessionaires/paginate
   def paginate
-    @pagy, @concessionaires = pagy(apply_access_scope(Concessionaire.all))
+    @pagy, @concessionaires = pagy(Concessionaire.all)
     render_page @pagy, @concessionaires, serializer: ConcessionaireSerializer
   end
 
   # GET /concessionaires
   def index
-    @concessionaires = apply_access_scope(Concessionaire.all)
+    @concessionaires = Concessionaire.all
 
     render json: @concessionaires
   end
