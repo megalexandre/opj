@@ -13,6 +13,7 @@ class ConcessionaireSerializer
       phone:      @concessionaire.phone,
       email:      @concessionaire.email,
       active:     @concessionaire.active,
+      logo:       @concessionaire.logo,
       created_at: @concessionaire.created_at,
       updated_at: @concessionaire.updated_at,
       created_by: @concessionaire.created_by,

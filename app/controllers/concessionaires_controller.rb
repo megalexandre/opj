@@ -53,6 +53,6 @@ class ConcessionairesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def concessionaire_params
-      params.permit(:name, :acronym, :code, :region, :phone, :email, :active)
+      params.permit(:name, :acronym, :code, :region, :phone, :email, :active, :logo)
     end
 end

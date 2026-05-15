@@ -11,6 +11,13 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: api_data; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA api_data;
+
+
+--
 -- Name: tiger; Type: SCHEMA; Schema: -; Owner: -
 --
 
@@ -157,7 +164,8 @@ CREATE TABLE public.concessionaires (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     created_by uuid,
-    updated_by uuid
+    updated_by uuid,
+    logo text
 );
 
 
@@ -735,9 +743,10 @@ ALTER TABLE ONLY public.projects
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public, tiger, topology;
+SET search_path TO "$user", public, topology, tiger;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260515164002'),
 ('20260514120003'),
 ('20260514120002'),
 ('20260514120001'),
