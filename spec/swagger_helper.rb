@@ -135,6 +135,41 @@ RSpec.configure do |config|
               empty:            { type: :boolean }
             }
           },
+          ProjectStatusComment: {
+            type: :object,
+            properties: {
+              id:         { type: :string, format: :uuid },
+              body:       { type: :string },
+              status_id:  { type: :string, format: :uuid },
+              created_by: { type: :string, format: :uuid, nullable: true },
+              created_at: { type: :string, format: :'date-time' },
+              updated_at: { type: :string, format: :'date-time' }
+            },
+            required: %w[id body status_id]
+          },
+          ProjectStatus: {
+            type: :object,
+            properties: {
+              id:         { type: :string, format: :uuid },
+              name:       { type: :string },
+              project_id: { type: :string, format: :uuid },
+              comments: {
+                type: :array,
+                items: {
+                  type: :object,
+                  properties: {
+                    id:         { type: :string, format: :uuid },
+                    body:       { type: :string },
+                    created_by: { type: :string, format: :uuid, nullable: true },
+                    created_at: { type: :string, format: :'date-time' }
+                  }
+                }
+              },
+              created_by: { type: :string, format: :uuid, nullable: true },
+              created_at: { type: :string, format: :'date-time' }
+            },
+            required: %w[id name project_id]
+          },
           Error: {
             type: :object,
             properties: {

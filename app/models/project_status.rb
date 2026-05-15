@@ -4,6 +4,8 @@ class ProjectStatus < ApplicationRecord
 
   has_many :comments, class_name: "ProjectStatusComment", dependent: :destroy
 
+  validates :name, presence: true
+
   after_create :sync_project_status
 
   private

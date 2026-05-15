@@ -15,13 +15,13 @@ class ProjectsController < ApplicationController
 
   # POST /projects
   def create
-    @project = ProjectCreate.new(params: project_params, current_user: current_user).call
+    @project = ProjectCreate.new(params: create_params, current_user: current_user).call
     render json: ProjectSerializer.new(@project).as_json, status: :created, location: @project
   end
 
   # PATCH/PUT /projects/1
   def update
-    if @project.update(project_params)
+    if @project.update(update_params)
       render json: ProjectSerializer.new(@project).as_json
     else
       render json: @project.errors, status: :unprocessable_content
@@ -40,8 +40,17 @@ class ProjectsController < ApplicationController
       authorize_record!(@project)
     end
 
-    # Only allow a list of trusted parameters through.
-    def project_params
-      params.permit(:client_id, :address_id, :utility_company, :utility_protocol, :customer_class, :integrator, :modality, :framework, :status, :amount, :dc_protection, :system_power, :unit_control, :description, :project_type, :fast_track, :coordinates, :sequence, :subsequence, services_names: [])
+    def create_params
+      params.permit(:client_id, :address_id, :utility_company, :utility_protocol, :customer_class,
+                    :integrator, :modality, :framework, :status, :amount, :dc_protection,
+                    :system_power, :unit_control, :description, :project_type, :fast_track,
+                    :coordinates, :sequence, :subsequence, services_names: [])
+    end
+
+    def update_params
+      params.permit(:client_id, :address_id, :utility_company, :utility_protocol, :customer_class,
+                    :integrator, :modality, :framework, :amount, :dc_protection,
+                    :system_power, :unit_control, :description, :project_type, :fast_track,
+                    :coordinates, :sequence, :subsequence, services_names: [])
     end
 end

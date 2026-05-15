@@ -9,7 +9,11 @@ Rails.application.routes.draw do
     get  'users',    to: 'auth#index'
   end
 
-  resources :projects
+  resources :projects do
+    resources :statuses, only: %i[index create], controller: 'project_statuses' do
+      resources :comments, only: %i[create update destroy], controller: 'project_status_comments'
+    end
+  end
 
   resources :uploads, only: %i[index create destroy] do
     member do
