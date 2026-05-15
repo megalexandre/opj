@@ -24,6 +24,9 @@ class ProjectSerializer
       fast_track: @project.fast_track,
       coordinates: serialize_coordinates(@project.coordinates),
       services_names: @project.services_names,
+      sequence: @project.sequence,
+      subsequence: @project.subsequence,
+      statuses: serialize_statuses(@project.statuses),
       created_at: @project.created_at,
       updated_at: @project.updated_at,
       created_by: @project.created_by,
@@ -32,6 +35,18 @@ class ProjectSerializer
   end
 
   private
+
+  def serialize_statuses(statuses)
+    statuses.order(created_at: :asc).map do |s|
+      {
+        id: s.id,
+        name: s.name,
+        comments: s.comments.map { |c| { id: c.id, body: c.body, created_by: c.created_by, created_at: c.created_at } },
+        created_by: s.created_by,
+        created_at: s.created_at
+      }
+    end
+  end
 
   def serialize_coordinates(point)
     return nil if point.nil?

@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects
   def index
-    @projects = apply_access_scope(Project.all)
+    @projects = apply_access_scope(Project.includes(statuses: :comments))
 
     render json: @projects.map { |p| ProjectSerializer.new(p).as_json }
   end
@@ -15,13 +15,8 @@ class ProjectsController < ApplicationController
 
   # POST /projects
   def create
-    @project = Project.new(project_params)
-
-    if @project.save
-      render json: ProjectSerializer.new(@project).as_json, status: :created, location: @project
-    else
-      render json: @project.errors, status: :unprocessable_content
-    end
+    @project = ProjectCreate.new(params: project_params, current_user: current_user).call
+    render json: ProjectSerializer.new(@project).as_json, status: :created, location: @project
   end
 
   # PATCH/PUT /projects/1
@@ -41,12 +36,12 @@ class ProjectsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
-      @project = Project.find(params.expect(:id))
+      @project = Project.includes(statuses: :comments).find(params.expect(:id))
       authorize_record!(@project)
     end
 
     # Only allow a list of trusted parameters through.
     def project_params
-      params.permit(:client_id, :address_id, :utility_company, :utility_protocol, :customer_class, :integrator, :modality, :framework, :status, :amount, :dc_protection, :system_power, :unit_control, :description, :project_type, :fast_track, :coordinates, services_names: [])
+      params.permit(:client_id, :address_id, :utility_company, :utility_protocol, :customer_class, :integrator, :modality, :framework, :status, :amount, :dc_protection, :system_power, :unit_control, :description, :project_type, :fast_track, :coordinates, :sequence, :subsequence, services_names: [])
     end
 end

@@ -11,17 +11,10 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: public; Type: SCHEMA; Schema: -; Owner: -
+-- Name: tiger; Type: SCHEMA; Schema: -; Owner: -
 --
 
-CREATE SCHEMA public;
-
-
---
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON SCHEMA public IS 'standard public schema';
+CREATE SCHEMA tiger;
 
 
 --
@@ -36,6 +29,62 @@ CREATE SCHEMA topology;
 --
 
 COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
+
+
+--
+-- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS fuzzystrmatch WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION fuzzystrmatch; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION fuzzystrmatch IS 'determine similarities and distance between strings';
+
+
+--
+-- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
+
+
+--
+-- Name: postgis_tiger_geocoder; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder WITH SCHEMA tiger;
+
+
+--
+-- Name: EXTENSION postgis_tiger_geocoder; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION postgis_tiger_geocoder IS 'PostGIS tiger geocoder and reverse geocoder';
+
+
+--
+-- Name: postgis_topology; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_topology WITH SCHEMA topology;
+
+
+--
+-- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
 
 
 SET default_tablespace = '';
@@ -131,6 +180,34 @@ CREATE TABLE public.customers (
 
 
 --
+-- Name: project_status_comments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.project_status_comments (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    project_status_id uuid NOT NULL,
+    body text NOT NULL,
+    created_by uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: project_statuses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.project_statuses (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    project_id uuid NOT NULL,
+    name character varying NOT NULL,
+    created_by uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: projects; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -157,7 +234,9 @@ CREATE TABLE public.projects (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     created_by uuid,
-    updated_by uuid
+    updated_by uuid,
+    sequence integer,
+    subsequence character varying
 );
 
 
@@ -286,6 +365,22 @@ ALTER TABLE ONLY public.customers
 
 
 --
+-- Name: project_status_comments project_status_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_status_comments
+    ADD CONSTRAINT project_status_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: project_statuses project_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_statuses
+    ADD CONSTRAINT project_statuses_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -362,6 +457,20 @@ CREATE UNIQUE INDEX index_customers_on_tax_id ON public.customers USING btree (t
 
 
 --
+-- Name: index_project_status_comments_on_project_status_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_status_comments_on_project_status_id ON public.project_status_comments USING btree (project_status_id);
+
+
+--
+-- Name: index_project_statuses_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_statuses_on_project_id ON public.project_statuses USING btree (project_id);
+
+
+--
 -- Name: index_projects_on_address_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -373,6 +482,20 @@ CREATE INDEX index_projects_on_address_id ON public.projects USING btree (addres
 --
 
 CREATE INDEX index_projects_on_client_id ON public.projects USING btree (client_id);
+
+
+--
+-- Name: index_projects_on_sequence_with_subsequence; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_projects_on_sequence_with_subsequence ON public.projects USING btree (sequence, subsequence) WHERE (subsequence IS NOT NULL);
+
+
+--
+-- Name: index_projects_on_sequence_without_subsequence; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_projects_on_sequence_without_subsequence ON public.projects USING btree (sequence) WHERE (subsequence IS NULL);
 
 
 --
@@ -465,11 +588,27 @@ ALTER TABLE ONLY public.service_entry_items
 
 
 --
+-- Name: project_status_comments fk_rails_2f6ed6bd7d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_status_comments
+    ADD CONSTRAINT fk_rails_2f6ed6bd7d FOREIGN KEY (project_status_id) REFERENCES public.project_statuses(id);
+
+
+--
 -- Name: customers fk_rails_36c947031b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.customers
     ADD CONSTRAINT fk_rails_36c947031b FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: project_statuses fk_rails_3cf2a2e96d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_statuses
+    ADD CONSTRAINT fk_rails_3cf2a2e96d FOREIGN KEY (project_id) REFERENCES public.projects(id);
 
 
 --
@@ -518,6 +657,22 @@ ALTER TABLE ONLY public.addresses
 
 ALTER TABLE ONLY public.services
     ADD CONSTRAINT fk_rails_7d5c8b41f6 FOREIGN KEY (concessionaire_id) REFERENCES public.concessionaires(id);
+
+
+--
+-- Name: project_status_comments fk_rails_802da82f95; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_status_comments
+    ADD CONSTRAINT fk_rails_802da82f95 FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
+-- Name: project_statuses fk_rails_8477995179; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_statuses
+    ADD CONSTRAINT fk_rails_8477995179 FOREIGN KEY (created_by) REFERENCES public.users(id);
 
 
 --
@@ -580,9 +735,13 @@ ALTER TABLE ONLY public.projects
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO public,tiger,topology;
+SET search_path TO "$user", public, tiger, topology;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260514120003'),
+('20260514120002'),
+('20260514120001'),
+('20260514120000'),
 ('20260502210003'),
 ('20260502210002'),
 ('20260502210001'),
