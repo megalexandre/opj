@@ -1,3 +1,5 @@
+require "image_processing/mini_magick"
+
 module ImageCompressible
   extend ActiveSupport::Concern
 
@@ -20,10 +22,17 @@ module ImageCompressible
     mime = header[/data:(image\/\w+);/, 1] || "image/png"
     ext  = mime.split("/").last
 
-    image = MiniMagick::Image.read(Base64.decode64(data), ".#{ext}")
-    image.resize "#{MAX_DIMENSION}x#{MAX_DIMENSION}>"
-    image.quality QUALITY.to_s
+    source = StringIO.new(Base64.decode64(data))
+    result = ImageProcessing::MiniMagick
+      .source(source)
+      .convert(ext)
+      .resize_to_limit(MAX_DIMENSION, MAX_DIMENSION)
+      .saver(quality: QUALITY)
+      .call
 
-    send(:"#{field}=", "data:#{mime};base64,#{Base64.strict_encode64(image.to_blob)}")
+    send(:"#{field}=", "data:#{mime};base64,#{Base64.strict_encode64(result.read)}")
+  ensure
+    result&.close
+    result&.unlink
   end
 end
