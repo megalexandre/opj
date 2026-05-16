@@ -22,7 +22,11 @@ module ImageCompressible
     mime = header[/data:(image\/\w+);/, 1] || "image/png"
     ext  = mime.split("/").last
 
-    source = StringIO.new(Base64.decode64(data))
+    source = Tempfile.new([ "image", ".#{ext}" ])
+    source.binmode
+    source.write(Base64.decode64(data))
+    source.flush
+
     result = ImageProcessing::MiniMagick
       .source(source)
       .convert(ext)
@@ -34,5 +38,7 @@ module ImageCompressible
   ensure
     result&.close
     result&.unlink
+    source&.close
+    source&.unlink
   end
 end

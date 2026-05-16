@@ -97,10 +97,11 @@ end
 
 def resolve_path(path)
   path
-    .gsub('<project_id>',  @project&.id.to_s)
-    .gsub('<client_id>',   @customer&.id.to_s)
-    .gsub('<status_id>',   @status&.id.to_s)
-    .gsub('<comment_id>',  @comment&.id.to_s)
+    .gsub('<project_id>',        @project&.id.to_s)
+    .gsub('<client_id>',         @customer&.id.to_s)
+    .gsub('<status_id>',         @status&.id.to_s)
+    .gsub('<comment_id>',        @comment&.id.to_s)
+    .gsub('<concessionaire_id>', @concessionaire&.id.to_s)
 end
 
 def build_payload(hash)
